@@ -1,45 +1,60 @@
+// namespace: "index" 
 <template>
-  <DataModelFieldEditNormal
-    v-model="config"
-    prop="dimension"
-    :column="{ dataType: 'number' }"
-  ></DataModelFieldEditNormal>
-  <el-input-number v-model="data1" style="width: 320px"></el-input-number><br />
-  <el-input-number v-model="data2" style="width: 320px"></el-input-number><br />
-  <el-button @click="test">TEST</el-button>
-  {{ config }}
+  <div class="index-container">
+    展示locales配置的内容：
+     <br>
+
+    <!-- 方式一、直接页面内使用 : 更改locale.value时 可直接自动切换对应语言 -->
+    方式一： {{ $t("headTxt.user.name") }}
+    <br />
+
+    <!-- 方式二、使用变量方式 : 看起来简洁明，但是更改locale.value时, 不能够自动切换对应语言！！！！ -->
+    方式二：{{ state.name }}
+    <br />
+
+    <!-- 方式三、使用变量方式+computed计算属性 简洁明了，更改locale.value时。也能够自动切换对应语言！！！！！！！！ -->
+    方式二：{{ state.computedName }}
+    <br />
+    方式一： {{ $t("wow",{msg:'测试'}) }}
+    <!-- 切换语言模式按钮  (方式一、直接页面内使用 好处：更改locale.value时 可直接自动切换对应语言)-->
+    <button @click="changeLanguage">
+      {{ $t("languageTxt") }}
+    </button>
+
+  </div>
 </template>
+<script>
+// 国际化
+import { useI18n } from "vue-i18n";
+import {i18n} from "@/lang";
+import { reactive, computed } from "vue";
+import {data1} from './data'
+export default {
+  name: "index",
+  setup() {
+    const I18n = useI18n();
+    let { locale } = I18n;
+    // 可以拿到我们当前设置的默认语言，切换语言更改locale.value的值即可，
+    // 但要和你language/index.js中message设置的key的值一致！！！
+    // 如果有需要，可以在store中配置一个然后全局使用
 
-<script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import DataModelFieldEditNormal from '../../components/bi/components/DataModelFieldEditNormal.vue'
-// import formatData from '../../components/bi/widgets/utils/dataFormat'
-function test() {
-  const a = 1234.456
-  const b = a.toFixed(2)
-  const c=b.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
-  console.log(a,b,toThousands(a))
-}
-function toThousands(num) {
-    return (num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
-//
-const config = reactive({
-  _format_number_converter: 'none',
-  _format_number_point: 2,
-  _format_number_thousandth_mark: true,
-  _format_number_negative: 'bracketed',
-  _format_number_prefix: '$',
-  _format_number_suffix: '结束'
-})
+    const state = reactive({
+      name: i18n.global.t("headTxt.user.name"),
+      computedName: computed(() => i18n.global.t("headTxt.user.name")),
+    });
 
-const data1 = ref(1234567.56789 * 123.45)
-const data2 = ref(123456.789)
+    /**
+     * 切换语言
+     */
+    const changeLanguage = () => {
+      locale.value = locale.value == "zhCN" ? "enUS" : "zhCN"; // 切换中英文
+    };
 
-// const c1 = computed(() => formatData(data1.value, config))
-// const c2 = computed(() => formatData(data2.value, config))
-
-
+    return { state, locale, changeLanguage };
+  },
+};
 </script>
-
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.index-container {
+}
+</style>

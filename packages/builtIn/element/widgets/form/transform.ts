@@ -1,5 +1,7 @@
 import * as transformUtil from '@/context/globalContext/componentRepository/util/transformUtil'
 export const elementFormTransform= transformUtil.buildWidgetFunc('el-form',{}, (result, {config,data}) => {
+  //
+  // console.log(data.value,result)
   //build default
   result['#'] = buildItems(config, data)
   //

@@ -1,18 +1,17 @@
 <template>
   <el-table :data="tableData" border >
-    <el-table-column  prop="key" label="Key"  />
-
-    <el-table-column fixed="right" label="Operations" width="280px">
+    <el-table-column  prop="key" :label="$t('_.builtIn.plugin.lifecycleEditor.key')"  />
+    <el-table-column fixed="right" :label="$t('_._.operation')" width="280px">
       <template #default="sp">
         <el-button-group>
-        <el-button  type="primary" @click="handleAdd()">Add</el-button>
-        <el-button  type="success" @click="handleEdit(sp)">Edit</el-button>
-        <el-button  type="danger" @click="handleDelete(sp)">Delete</el-button>
+        <el-button  type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button>
+        <el-button  type="success" @click="handleEdit(sp)">{{ $t('_._.edit') }}</el-button>
+        <el-button  type="danger" @click="handleDelete(sp)">{{ $t('_._.del') }}</el-button>
         </el-button-group>
       </template>
     </el-table-column>
     <template #empty>
-     Please <el-button  type="primary" @click="handleAdd()">Add</el-button> a new record
+      <el-button  type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button> 
       </template>
   </el-table>
  
@@ -25,9 +24,8 @@
 import {ref,computed,inject} from 'vue'
 import { ElMessageBox } from 'element-plus'
 import LifecycleEditorDialog from './LifecycleEditorDialog.vue'
-
-
 import {deepCopy} from '@/utils/tools'
+import {t} from '@/lang/index'
 //Refer to the popup dialog
 const lifecycleEditorDialogRef=ref()
 
@@ -60,11 +58,11 @@ const callback=(dataNew:Object)=>{
 //Delete
 const handleDelete = (sp) => {
   ElMessageBox.confirm(
-    'Will you want to delte this lifecycle',
-    'Warning',
+    t('_.builtIn.plugin.lifecycleEditor.deletePrompt'),
+    t('_._.warning'),
     {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: t('_._.yes'),
+      cancelButtonText:t('_._.no'),
       type: 'warning',
     }
   )

@@ -1,7 +1,8 @@
-import { ref,computed} from 'vue'
+import { ref,} from 'vue'
 import {findPluginsByEntry} from '@/context/appContext/appContextUtil'
 import MenuAndPageEditor from './MenuAndPageEditor.vue'
 import {hasAuth} from '@/utils/auth'
+import {t} from '@/lang/index'
 //build main tabs config
 export default function buildMain(appContext){
     //activetab
@@ -15,7 +16,7 @@ export default function buildMain(appContext){
         '#':[
             {
                 '~':'el-tab-pane',
-                '#label': [{ '~': 'lc-icon', icon:'mdiFileDocumentMultipleOutline' ,style:{'margin-right':'4px'}}, 'Menu and page'],
+                '#label': [{ '~': 'lc-icon', icon:'mdiFileDocumentMultipleOutline' ,style:{'margin-right':'4px'}}, t('_.components.appEditor.title')],
                 'name':'menuAndPage',
                 '#':{
                     '~':MenuAndPageEditor,

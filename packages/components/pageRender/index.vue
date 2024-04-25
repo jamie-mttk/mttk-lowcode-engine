@@ -1,13 +1,11 @@
 <template>
-
-    <MttkWrapComp  :config="pageConfig" ></MttkWrapComp>
-
+  <MttkWrapComp :config="pageConfig"></MttkWrapComp>
 </template>
 
 <script setup lang="ts">
 import lcWrap from '@/components/wrap/index.vue'
-
-import { computed,provide } from 'vue'
+import { useWindowSize  } from '@vueuse/core'
+import { computed, provide } from 'vue'
 
 //
 const props = defineProps({
@@ -17,14 +15,14 @@ const props = defineProps({
     default() {
       return {}
     }
-  },
+  }
 })
 //
-provide('context',props.context)
+provide('context', props.context)
 //
-const pageConfig = computed (()=> {
-  if(!props.context.codeManager.getCode().ui){
-    return {'~':'div','#':'No source code available'}
+const pageConfig = computed(() => {
+  if (!props.context.codeManager.getCode().ui) {
+    return { '~': 'div', '#': 'No source code available' }
   }
 
   // console.log('calculate with'+JSON.stringify(props.context.codeManager.getCode(),null,2))
@@ -57,53 +55,131 @@ const pageConfig = computed (()=> {
   //
   //  console.log('!!!!!!!!!!!!', JSON.stringify(props.context.codeManager.getCode().ui[0]))
   //
-  const code=props.context.codeManager.getCode();
+  const code = props.context.codeManager.getCode()
   let config = {
     '~component': lcWrap,
-    'modelValue': code.ui[0],
+    modelValue: code.ui[0],
 
     // pageContext: props.context,
     // jamie:'I am '+props.context.test
     ...lifecycles.value
   }
 
-  //Under render mode, we should calculate the style of width/height
-  if(code.renderMode=='absolute'){
-    //
-    // const heightCal=pageHeightByControlls();
-    // console.log(heightCal)
-    //
-    const scaleVal=(code.zoom||100)/100
-    const width=code.width||1920
-    const height=code.height||1080
+  //
+  trySetStyle(config, code)
 
-    config.style={width:width+'px',height:height+'px','transform-origin':'0 0',transform:'scale('+scaleVal+','+scaleVal+')'}//
-    //
-    if(scaleVal!=1){
-      //Here we wrap a DIV since the sapce in DOM is still kept after transform
-    config={
-      '~':'div',
-      style:{width:width*scaleVal+'px',height:height*scaleVal+'px',overflow:'hidden'},
-      '#':config,
-    }
-  }
-  }
   // console.log(config)
-//  console.log(JSON.stringify(config))
+  // console.log(JSON.stringify(config))
   //
   //  try{
   // throw new Error('TEST ME')
   //  }catch(err){
   //   console.log(err)
   //  }
-//
+  //
 
-//
-  return config;
+  //
+  return config
 })
 //
+function trySetStyle(config, code) {
+  //Only need to set if render mode is NOT absolute
+  if (code.renderMode != 'absolute') {
+    return
+  }
+  //
+  const width = code.settingAbsolute?.width || 1920
+  const height = code.settingAbsolute?.height || 1080
+  //calculate scaleValue
+  let scaleX = 1
+  let scaleY = 1
+  if (props.context.mode.value == 'edit') {
+    scaleX = (code.settingAbsolute?.zoom || 100) / 100
+    scaleY = scaleX
+  } else {
+    //View mode
+    const scale = tryCalScale(config, code, { width, height })
+    if (scale) {
+      scaleX = scale.scaleX || 1
+      scaleY = scale.scaleY || 1
+    }
+    //
 
-//append to lifecyle list 
+  }
+
+  //
+  if (scaleX == 1 && scaleY == 1) {
+    //No need to zoom
+    config.style = {
+      width: width + 'px',
+      height: height + 'px'
+    }
+  } else {
+    //Zoom
+    config.style = {
+      width: width + 'px',
+      height: height + 'px',
+      'transform-origin': '0 0',
+      transform: 'scale(' + scaleX + ',' + scaleY + ')'
+    }
+    //Here we wrap a DIV since the sapce in DOM is still kept after transform
+    config = {
+      '~': 'div',
+      style: {
+        width: width * scaleX + 'px',
+        height: height * scaleY + 'px',
+        overflow: 'hidden'
+      },
+      '#': config
+    }
+  }
+}
+//
+function tryCalScale(config, code, { width, height }) {
+  const zoomMode = code.settingAbsolute?.zoomMode||'none'
+  if (!zoomMode || zoomMode == 'none') {
+    //no need to scale
+    return undefined
+  }
+  //view main area bounding
+  const viewMain=getViewMain()
+  //full screen
+  const { width:widthFull, height:heightFull } = useWindowSize()
+  //calculate the main area's max possible width and height
+  //-1 is to fix the precision issue to avoid scroll bar showing
+  const widthMax=widthFull.value-(viewMain?.left||0)-1
+  const heightMax=heightFull.value-(viewMain?.top||0)-1
+  //
+let scaleX=1
+let scaleY=1
+if(zoomMode=='zoom-width'){
+  scaleX= widthMax/width
+  scaleY=scaleX
+}
+
+if(zoomMode=='zoom-height'){
+  scaleY=heightMax/height
+  scaleX=scaleY
+}
+if(zoomMode=='zoom-both'){
+  scaleX= widthMax/width
+  scaleY=heightMax/height
+}
+// console.log(viewMain,widthFull.value,heightFull.value,widthMax,heightMax,'@@@@', width, height,'###', { scaleX, scaleY })
+  //
+  return { scaleX, scaleY }
+}
+//return lcViewMainArea's bounding 
+function getViewMain() {
+  //Get view main area
+  const element = document.querySelector('#lcViewMainArea')
+  if (!element) {
+    return undefined
+  }
+  //
+  return element.getBoundingClientRect()
+}
+//append to lifecyle list
 function appendLifeCycle(result, key, func) {
   const keyReal = '^' + key
   if (!result[keyReal]) {
@@ -113,4 +189,3 @@ function appendLifeCycle(result, key, func) {
 }
 </script>
 <style lang="scss"></style>
-

@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="visible"
-    title="数据权限编辑"
+    :title="$t('_.components.auth.dialog.title')"
     :destroy-on-close="true"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
@@ -9,7 +9,7 @@
   >
 
     <el-form ref="dataEditorFormRef" :model="data" label-position="top">
-      <el-form-item label="所有者" prop="_owners">
+      <el-form-item :label="$t('_.components.auth.dialog.data._owners')" prop="_owners">
         <el-select multiple filterable v-model="data._owners">
           <el-option
             v-for="item in accounts"
@@ -22,12 +22,12 @@
       <el-form-item prop="_authorities" :rules="{validator:validateAuthorities}">
         <template #label>
           <div style="display: flex; align-items: center; justify-content: space-between">
-            <span>数据权限</span>
-            <span><el-button type="success" @click="handleAdd">增加新行</el-button></span>
+            <span>{{ $t('_.components.auth.name') }}</span>
+            <span><el-button type="success" @click="handleAdd">{{$t('_._.add')}}</el-button></span>
           </div>
         </template>
         <el-table :data="data._authorities" style="width: 100%">
-          <el-table-column prop="type" label="类型" width="160">
+          <el-table-column prop="type" :label="$t('_.components.auth.dialog.data.type')" width="160">
             <template #default="sp">
               <el-select filterable v-model="sp.row.type" :disabled="sp.row.type == 'ownerGroup'">
                 <el-option
@@ -40,7 +40,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="id" label="用户/用户组">
+          <el-table-column prop="id" :label="$t('_.components.auth.dialog.data.userOrUserGroup')">
             <template #default="sp">
               <div v-if="sp.row.type == 'ownerGroup'"></div>
               <el-select filterable v-model="sp.row.id" v-else>
@@ -53,7 +53,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="access" label="访问" width="100">
+          <el-table-column prop="access" :label="$t('_.components.auth.dialog.data.access')" width="100">
             <template #default="sp">
               <el-switch
                 :modelValue="authValue(sp.row, 'access')"
@@ -61,7 +61,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="edit" label="编辑" width="100">
+          <el-table-column prop="edit" :label="$t('_._.edit')" width="100">
             <template #default="sp">
               <el-switch
                 :modelValue="authValue(sp.row, 'edit')"
@@ -69,7 +69,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="del" label="删除" width="100">
+          <el-table-column prop="del" :label="$t('_._.del')" width="100">
             <template #default="sp">
               <el-switch
                 :modelValue="authValue(sp.row, 'del')"
@@ -77,7 +77,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="auth" label="授权" width="100">
+          <el-table-column prop="auth" :label="$t('_.components.auth.dialog.data.auth')" width="100">
             <template #default="sp">
               <el-switch
                 :modelValue="authValue(sp.row, 'auth')"
@@ -85,7 +85,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="operation" label="操作" width="80">
+          <el-table-column prop="operation" :label="$t('_._.operation')" width="100">
             <template #default="sp">
               <lc-icon
                 icon="mdiDeleteOutline"
@@ -100,8 +100,8 @@
 
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visible = false">取消</el-button>
-        <el-button type="primary" @click="submitForm(dataEditorFormRef)"> 保存 </el-button>
+        <el-button @click="visible = false">{{$t('_._.cancel')}}</el-button>
+        <el-button type="primary" @click="submitForm(dataEditorFormRef)">{{ $t('_._.save')}} </el-button>
 
       </span>
     </template>
@@ -113,8 +113,9 @@ import { ref, computed, inject, onMounted } from 'vue'
 import {  ElMessage } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { dataAuthTypes } from './data'
+import {t} from '@/lang/index'
 //
-const props = defineProps([ 'resource'])
+const props = defineProps([ 'resource','uri'])
 const emit=defineEmits(['close'])
 const visible = defineModel('visible', { default: false })
 const data = defineModel('data', { default: {_authorities:[]} })
@@ -198,11 +199,11 @@ const validateAuthorities = (rule: any, value: any, callback: any) => {
   for(let i=0;i<value.length;i++){
     const a=value[i]
     if(a.type!='ownerGroup' &&  !a.id){
-      callback(new Error("第"+(i+1)+"行没有选择用户或用户组"))
+      callback(new Error(t('_.components.auth.dialog.saveError1',[(i+1)])))
     }
     // console.log(a,i,(!a.operations || a.operations.length==0))
     if(!a.operations || a.operations.length==0){
-      callback(new Error("第"+(i+1)+"行没有选择任何权限"))
+      callback(new Error(t('_.components.auth.dialog.saveError2',[(i+1)])))
     }
   }
   //OK
@@ -222,7 +223,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       globalContext
         .request({
           method: 'POST',
-          url: props.resource+'/saveDataAuth',
+          url: (props.uri||props.resource)+'/saveDataAuth',
           data: data.value,
         })
         .then(function () {
@@ -230,7 +231,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           visible.value = false
           //
           ElMessage({
-            message: '保存成功',
+            message: t('_._.saveSuccess'),
             type: 'success'
           })
         })

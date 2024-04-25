@@ -1,22 +1,21 @@
 <template>
     <el-scrollbar height="520px">
-        <el-alert  type="info" effect="dark" :closable="false"  >
+        <el-alert  type="info"  :closable="false"  >
             <template #title>
-                Total: {{ total }} Selected: {{modelValue.length}} <span style="font-size:0.8em">  May include the automatically selected folders</span>
+                {{ $t('_.components.appManager.customizeComponent.total') }}: {{ total }} {{ $t('_.components.appManager.customizeComponent.selected') }}: {{modelValue.length}}   ( {{ $t('_.components.appManager.customizeComponent.prompt') }} )
             </template>
             </el-alert>
         <el-table :data="tableData" ref="tableRef" style="width: 100%; " row-key="key" border default-expand-all 
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50" />
-            <el-table-column prop="key" label="Key" sortable>
+            <el-table-column prop="key" :label="$t('_._.key')" width="200" sortable>
                 <template #default="{ row }">
                     <lc-icon :icon="row.icon"></lc-icon> {{ row.key }}
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="Name" sortable />
-            <el-table-column prop="description" label="Description" sortable />
-            <el-table-column prop="entry" label="Entry" width="120" sortable />
-            <el-table-column prop="sequence" label="Sequence" width="120" sortable />
+            <el-table-column prop="name" :label="$t('_._.name')" width="240" sortable />
+            <el-table-column prop="description" :label="$t('_._.description')" sortable />
+            <el-table-column prop="sequence" :label="$t('_._.sequence')" width="120" sortable />
         </el-table>
 
     </el-scrollbar>

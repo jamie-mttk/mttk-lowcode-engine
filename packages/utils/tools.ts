@@ -1,3 +1,6 @@
+import {computed} from 'vue'
+import { useWindowSize } from '@vueuse/core'
+
 //Deep copy
 export function deepCopy(obj) {
   //防止为undefined
@@ -10,15 +13,15 @@ export function deepCopy(obj) {
   //
   if (Array.isArray(obj)) {
     //console.log('2:'+JSON.stringify(obj))
-    let result = []
+    const result = []
     obj.map((item) => {
       result.push(deepCopy(item))
     })
     //
     return result
   } else {
-    // 创建一个新对象
-    let result = {}
+    // Create the cloned object
+    const result = {}
     Object.keys(obj).map((key) => {
       result[key] = deepCopy(obj[key])
     })
@@ -68,4 +71,10 @@ export function isPromise(value: any) {
 //whether the input is a number/float
 export function isNumber(str) {
 	return /^[0-9]+.?[0-9]*$/.test(str);
+}
+
+//Check whether it is running inside mobile
+export function isMobile(maxWidth=768){
+  const { width } = useWindowSize()
+  return computed(()=>width.value<maxWidth)
 }

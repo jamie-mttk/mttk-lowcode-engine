@@ -2,18 +2,20 @@
    <div class="auth-container">
   <div class="lc-common-toolbar toolbar"
     style="background-color:var(--el-color-info);margin-top:10px 0;border-radius:0px;">
-    <div class="left" style="font-weight: bold;"><lc-icon icon="mdiShieldAccount" style="margin-right: 4px" size="large" />角色管理</div>
-    <el-input v-model="filter" placeholder="Input to filter" class="middle" clearable></el-input>
+    <div class="left" style="font-weight: bold;"><lc-icon icon="mdiShieldAccount" style="margin-right: 4px" size="large" />
+      {{ $t('_.components.top.accountRole.title') }}
+    </div>
+    <el-input v-model="filter" :placeholder="$t('_._.filterPrompt')" class="middle" clearable></el-input>
 
     <el-button-group class="right">
       <el-button @click="load">
         <template #icon>
           <lc-icon icon="mdiRefresh"></lc-icon>
         </template>
-        刷新</el-button>
+        {{ $t('_._.refresh') }}</el-button>
       <el-button @click="handleAdd" v-auth:accountRole_add> <template #icon>
           <lc-icon icon="mdiPlus"></lc-icon>
-        </template>增加</el-button>
+        </template>{{ $t('_._.add') }}</el-button>
   
     </el-button-group>
   </div>
@@ -21,20 +23,21 @@
   class="table-area" ref="editorTableRef">
 
 
-    <el-table-column prop="name" label="名称" sortable  width="320" ></el-table-column>
-    <el-table-column prop="description" label="描述" sortable/>
+    <el-table-column prop="name" :label="$t('_._.name')" sortable  width="320" ></el-table-column>
+    <el-table-column prop="description" :label="$t('_._.description')" sortable/>
 
-    <el-table-column prop="_updateTime" label="最后更新" sortable width="240">
+    <el-table-column prop="_updateTime" :label="$t('_._.updateTime')" sortable width="240">
       <template #default="sp">
         {{ formatMongoDate(sp.row['_updateTime']) }}
       </template>
     </el-table-column>
-    <el-table-column label="操作" width="240">
+    <el-table-column :label="$t('_._.operation')" width="320">
       <template #default="sp">
         <el-button-group>
-          <el-button @click="handleEdit(sp)"  v-data-auth:edit="sp.row">编辑</el-button>
-          <el-button @click="handleDelete(sp)"  v-data-auth:del="sp.row">删除</el-button>
-          <el-button @click="handleCopy(sp)"  v-auth:accountRole_add>拷贝</el-button>
+          <el-button @click="handleEdit(sp)"  v-data-auth:edit="sp.row">{{ $t('_._.edit') }}</el-button>
+          <el-button @click="handleDelete(sp)"  v-data-auth:del="sp.row">{{ $t('_._.del') }}</el-button>
+          <el-button @click="handleCopy(sp)"  v-auth:accountRole_add>{{ $t('_._.copy') }}</el-button>
+          <DataAuthButton :data="sp.row" resource="page" />
         </el-button-group>
       </template>
     </el-table-column>
@@ -51,8 +54,8 @@ import { ref, computed, nextTick, onMounted, inject } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import AccountRoleEditorDialog from './AccountRoleEditorDialog.vue'
 import { formatMongoDate } from '@/utils/tools'
-
-
+import DataAuthButton from '@/components/auth/DataAuthButton.vue'
+import {t} from '@/lang/index'
 
 const globalContext = inject('globalContext')
 
@@ -111,7 +114,7 @@ const editorTableRef = ref()
 
 
   //
-  let dataAdd = {authorities:[]}
+  let dataAdd = {authorities:{}}
   //console.log(JSON.stringify(dataAdd))
   //
   editorDialogRef.value.show(dataAdd, callback)
@@ -134,19 +137,19 @@ const callback = (dataNew: Object) => {
     load();
     //
     ElMessage({
-      message: '用户组保存成功',
-      type: '成功',
+      message: t('_._.saveSuccess'),
+      type: 'success',
     })
   });
 }
 //Delete
 const handleDelete = (sp) => {
   ElMessageBox.confirm(
-    '确定删除此用户组吗',
-    '警告',
+    t('_._.delPrompt'),
+    t('_._.warning'),
     {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: t('_._.yes'),
+      cancelButtonText: t('_._.no'),
       type: 'warning',
     }
   )
@@ -163,8 +166,8 @@ const handleDelete = (sp) => {
         load();
         //
         ElMessage({
-          message: '删除成功',
-          type: '成功',
+          message: t('_._.delSuccess'),
+          type: 'success',
         })
       });
 
@@ -173,11 +176,11 @@ const handleDelete = (sp) => {
 //Copy
 const handleCopy = (sp) => {
   ElMessageBox.confirm(
-    '确定复制此用户组吗',
-    '警告',
+    t('_._.copyPrompt'),
+    t('_._.warning'),
     {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: t('_._.yes'),
+      cancelButtonText: t('_._.no'),
       type: 'warning',
     }
   )
@@ -194,8 +197,8 @@ const handleCopy = (sp) => {
         load();
         //
         ElMessage({
-          message: '复制成功',
-          type: '成功',
+          message: t('_._.copySuccess'),
+          type: 'success',
         })
       });
 

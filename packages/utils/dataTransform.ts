@@ -1,5 +1,6 @@
 import { ElMessage } from 'element-plus'
 import {smartJsonParse} from './tools'
+import {t} from '@/lang/index'
 //Try to conver dataContent to the required dataType
 export function tryConvertDataType(dataKey:string,dataType: string, dataContent: string) {
     if (dataType == 'Array') {
@@ -7,7 +8,8 @@ export function tryConvertDataType(dataKey:string,dataType: string, dataContent:
       if (Array.isArray(result)) {
         return result;
       }
-      ElMessage.error('The data of ' + dataKey + ' requires ' + dataType + ',but the data content can not be translate into an array')
+
+      ElMessage.error(t('_.utils.dataTransform.error1',[dataKey,dataType]))
       return undefined
     } else if (dataType == 'Object') {
       const result = smartJsonParse(dataContent)
@@ -15,7 +17,7 @@ export function tryConvertDataType(dataKey:string,dataType: string, dataContent:
         return result;
       }
       //
-      ElMessage.error( 'The data of ' + dataKey + ' requires ' + dataType + ',but the data content can not be translate into an object or it is array')
+      ElMessage.error(t('_.utils.dataTransform.error2',[dataKey,dataType]))
       return undefined
     } else if (dataType == 'String') {
       return dataContent

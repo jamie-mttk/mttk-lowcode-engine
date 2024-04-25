@@ -1,7 +1,7 @@
 <template>
     <el-dialog v-model="dialogVisible" title="Lifecycle editor" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form ref="dataEditorFormRef" :model="formData" label-width="120px">
-            <el-form-item label="Key" prop="key" required>
+            <el-form-item :label="$t('_.builtIn.plugin.lifecycleEditor.key')" prop="key" required>
                 <el-select v-model="formData.key" >
                     <el-option  value="onMounted" />
                     <el-option  value="onUpdated" />
@@ -23,16 +23,16 @@
                     <el-option  label="method" value="Method" />
                 </el-select>
             </el-form-item> -->
-            <el-form-item label="Code" prop="code" required>
-                <b-ace-editor v-model="formData.code" lang="javascript" width="100%" height="40vh" :readonly="false"
+            <el-form-item :label="$t('_.builtIn.plugin.lifecycleEditor.code')" prop="code" required>
+                <b-ace-editor v-model="formData.code" lang="javascript" width="100%" height="30vh" :readonly="false"
                     :font-size="14"></b-ace-editor>
             </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button @click="dialogVisible = false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    Save
+                    {{ $t('_._.save') }}
                 </el-button>
             </span>
         </template>

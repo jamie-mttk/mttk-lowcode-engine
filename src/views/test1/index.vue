@@ -1,31 +1,43 @@
 <template>
-<splitpanes style="height: 400px" class="default-theme">
-  <pane >1</pane>
-  <pane>
-    <splitpanes horizontal>
-      <pane >2</pane>
-      <pane>3</pane>
-      <pane>4</pane>
-    </splitpanes>
-  </pane>
-  <pane>5</pane>
-</splitpanes>
+ <div>
+  <h3>{{$t('_.components.top.account.cpDialog.title')}}</h3>
+  
+  <el-form ref="dataEditorFormRef" :model="formData" label-width="200px">
+
+      <el-form-item
+        :label="$t('_.components.top.account.cpDialog.passwordOld')"
+        prop="passwordOld"
+        required
+      >
+        <el-input type="password" :show-password="true" v-model="formData.passwordOld" />
+      </el-form-item>
+      <el-form-item
+        :label="$t('_.components.top.account.cpDialog.password')"
+        prop="password"
+        required
+      >
+        <el-input type="password" :show-password="true" v-model="formData.password" />
+      </el-form-item>
+      <el-form-item
+        :label="$t('_.components.top.account.cpDialog.passwordConfirm')"
+        prop="passwordConfirm"
+        required
+        :rules="{ validator: validatePasswordSame }"
+      >
+        <el-input type="password" :show-password="true" v-model="formData.passwordConfirm" />
+      </el-form-item>
+      <el-form-item label="">
+    <el-button type="primary" @click="submitForm(dataEditorFormRef)">
+                    {{ $t('_._.ok') }}
+                </el-button>
+              </el-form-item>
+    </el-form>
+  
+ </div>
 </template>
 
 <script lang="ts" setup>
-import { Splitpanes, Pane } from 'splitpanes'
-import 'splitpanes/dist/splitpanes.css'
+import { ref } from 'vue'
+//
+const formData=ref({})
 </script>
-
-<style>
-
-.splitpanes__pane {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Helvetica, Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 2em;
-  background-color: aqua;
-}
-</style>

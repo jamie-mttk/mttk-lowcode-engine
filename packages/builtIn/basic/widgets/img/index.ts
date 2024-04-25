@@ -1,10 +1,12 @@
 import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil'
+import {t} from '@/lang/index'
 //button config
  const imgConfig = {
   key: '_img',
-  name: 'Image',
-  description: '',
+  name: t('_.builtIn.basic.img.name'),
+  description: t('_.builtIn.basic.img.description'),
   icon: 'mdiImageArea',
+  sequence: 2,
   transform: function ({config}) {
     const result = {
       '~':  'img' ,
@@ -22,10 +24,10 @@ import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil
         alt: 'No picture'
       },
       ui: [
-        uiUtil.createInput('src', 'Image URL'),
-        uiUtil.createInput('alt', 'Alternative text'),
-        uiUtil.createInputNumber('width', 'Width'),
-        uiUtil.createInputNumber('height', 'Height'),
+        uiUtil.createInput('src',t('_.builtIn.basic.img.src')),
+        uiUtil.createInput('alt', t('_.builtIn.basic.img.alt')),
+        uiUtil.createInputNumber('width', t('_.builtIn.basic.img.width'),{min:0}),
+        uiUtil.createInputNumber('height',t('_.builtIn.basic.img.height'),{min:0}),
 
       ]
     },

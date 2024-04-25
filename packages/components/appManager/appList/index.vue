@@ -1,24 +1,33 @@
 <template>
-  <el-row>
-    <el-col :span="6" v-for="app in apps" :key="app['_id']" >
+  <el-row style="padding: 6px">
+    <el-col :md="6" :sm="24" :xs="24" v-for="app in apps" :key="app['_id']">
       <AppSingle :modelValue="app" @action="handleAction"></AppSingle>
     </el-col>
-    <el-col :span="6" v-auth:app_add>
-      <el-row style="padding:16px;">
-        <el-col :span="24" style="height:160px;width:100%;border-radius: 4px; padding:16px;background-color:#137372;display:flex;justify-content: center;">         
-          <el-button type="success" link   @click="handleAdd">
+    <el-col :md="6" :sm="24" :xs="24" v-auth:app_add>
+      <el-row style="padding: 12px">
+        <el-col
+          :span="24"
+          style="
+            height: 160px;
+            width: 100%;
+            border-radius: 4px;
+            padding: 16px;
+            background-color: #137372;
+            display: flex;
+            justify-content: center;
+          "
+        >
+          <el-button type="success" link @click="handleAdd">
             <lc-icon icon="mdiPlus" size="x-large"></lc-icon>
-            <h3>Add a new application</h3></el-button>
+            <h3>{{ $t('_.components.appManager.add') }}</h3>
+          </el-button>
         </el-col>
       </el-row>
-
     </el-col>
   </el-row>
 
-
   <AppDialog ref="appDialogRef"></AppDialog>
 </template>
-
 
 <script setup lang="ts">
 import { ref, inject } from 'vue'
@@ -27,26 +36,27 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import AppSingle from './Single.vue'
 import AppDialog from './AppDialog.vue'
 import { deepCopy } from '@/utils/tools'
-
+import { t } from '@/lang/index'
 const emit = defineEmits<{
   (e: 'action', type: string, app: object): void
 }>()
-
 
 //
 const globalContext = inject('globalContext')
 
 const apps = ref([])
 //
-load();
+load()
 //
 function load() {
-  globalContext.request({
-    method: "GET",
-    url: 'app/query',
-  }).then(function (response) {
-    apps.value = response.list
-  });
+  globalContext
+    .request({
+      method: 'GET',
+      url: 'app/query'
+    })
+    .then(function (response) {
+      apps.value = response.list
+    })
 }
 //
 function handleAction(type: string, app: object) {
@@ -63,7 +73,7 @@ const appDialogRef = ref()
 //
 function handleAdd() {
   //
-  appDialogRef.value.show({}, callback)
+  appDialogRef.value.show({ colorBackground: '#EBEDF0' }, callback)
 }
 function handleEdit(app: object) {
   const copied = deepCopy(app)
@@ -71,52 +81,48 @@ function handleEdit(app: object) {
 }
 //Delete
 const handleDelete = (app) => {
-  ElMessageBox.confirm(
-    'Will you want to delte this application?All the menus and pages under this application will be deleted!',
-    'Warning',
-    {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-      //
-      //
-      globalContext.request({
-        method: "POST",
+  ElMessageBox.confirm(t('_.components.appManager.delPrompt'), t('_._.warning'), {
+    confirmButtonText: t('_._.yes'),
+    cancelButtonText: t('_._.no'),
+    type: 'warning'
+  }).then(() => {
+    //
+    //
+    globalContext
+      .request({
+        method: 'POST',
         url: 'app/delete',
         params: {
           id: app['_id']
         }
-      }).then(function () {
-        load();
+      })
+      .then(function () {
+        load()
         //
         ElMessage({
-          message: 'Application deleted',
-          type: 'success',
+          message: t('_._.delSuccess'),
+          type: 'success'
         })
-      });
-
-    })
-
+      })
+  })
 }
 const callback = (dataNew: Object) => {
   //
-  globalContext.request({
-    method: "POST",
-    url: 'app/save',
-    data: dataNew,
-  }).then(function () {
-    load();
-    //
-    ElMessage({
-      message: 'Application saved',
-      type: 'success',
+  globalContext
+    .request({
+      method: 'POST',
+      url: 'app/save',
+      data: dataNew
     })
-  });
+    .then(function () {
+      load()
+      //
+      ElMessage({
+        message: t('_._.saveSuccess'),
+        type: 'success'
+      })
+    })
 }
-
 </script>
 <style scope>
 /* .app-list-area {
@@ -126,5 +132,4 @@ const callback = (dataNew: Object) => {
   height: 100%;
 
 } */
-
 </style>

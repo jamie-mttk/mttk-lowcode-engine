@@ -1,7 +1,7 @@
 <template>
   <span @click="handleDataAuth" v-data-auth:auth="props.data">
     <slot>
-        <el-button v-bind="$attrs">数据权限</el-button>
+        <el-button v-bind="$attrs">{{ $t('_.components.auth.name') }}</el-button>
     </slot>
   </span>
 </template>
@@ -11,15 +11,15 @@ import { ref, inject } from 'vue'
 import ResourceAuthorityDialog from './ResourceAuthorityDialog.vue'
 import {dynamicRender} from 'mttk-vue-wrap'
 const globalContext = inject('globalContext')
-
-const props=defineProps(['data','resource'])
+//uri is optional if it is same as resource
+const props=defineProps(['data','resource','uri'])
 
 function handleDataAuth(){
-    showDataAuthDialog(props.data,props.resource)
+    showDataAuthDialog(props.data,props.resource,props.uri)
 }
 
 
-function showDataAuthDialog(data,resource){
+function showDataAuthDialog(data,resource,uri){
     const visible = ref(false)
     const formData=ref(data)
     if(!formData.value._authorities){
@@ -36,6 +36,7 @@ function showDataAuthDialog(data,resource){
       '~modelValueName':'visible',
       data:formData,
       resource,
+      uri,
     }
     dynamicRender(config, globalContext.vueApp._context, {
       removeEvent: 'close'

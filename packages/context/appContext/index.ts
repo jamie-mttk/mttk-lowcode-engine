@@ -3,9 +3,9 @@ import mitt from 'mitt'
 
 export default function createAppContext(globalContext: object) {
   //APP key
-  let keySaved=ref('')
+  const keySaved=ref('')
   //
-  let codeSaved=ref({})
+  const codeSaved=ref({})
   //
   const appContext = {
     //

@@ -1,5 +1,3 @@
-import { defineAsyncComponent } from 'vue'
-
 import createGlobalContext from '@/context/globalContext/index'
 import createAppContext from '@/context/appContext/index'
 import createContext from '@/context/pageContext/index'
@@ -13,44 +11,25 @@ import lcIcon from '@/components/icon/index.vue'
 import lcFullHeight from '@/components/fullHeight/index.vue'
 import lcFormItem from '@/components/pageDesign/propsEditor/components/FormItem.vue'
 
-//import Wrap from './components/wrap/index.vue'
-import WRAPPER from 'mttk-vue-wrap'
+
 
 //Below are for designer
-import { installDesigner, installRouter,  installPlugin } from '@/installer/index'
+import * as install from '@/install/index'
+import * as locale from '@/lang/index'
 import lcWorkspaceManager from '@/components/workspaceManager/index.vue'
 import lcAppEditorWithRouter from '@/components/appEditor/appEditorWithRouter.vue'
 import * as widgetUtil from '@/context/globalContext/componentRepository/util/uiUtil'
 import * as widgetTransformUtil from '@/context/globalContext/componentRepository/util/transformUtil'
 import * as tools from '@/utils/tools'
+import * as download from '@/utils/download'
 import lcDataAuthButton from '@/components/auth/DataAuthButton.vue'
 import {vFullHeight} from '@/components/fullHeight/directive'
 import * as authentication from './utils/authentication'
-//install
-const install = (app) => {
-  app.component('lcPageRender', lcPageRender)
-  app.component('lcDeployed', lcDeployed)
-  app.component('lcDeployedNoRouter', lcDeployedNoRouter)
-  // app.component('lc-wrap',Wrap)
-  app.component('lcPanel', lcPanel)
-  app.component('lcLayout', lcLayout)
-  app.component('lcIcon', lcIcon)
-  app.use(WRAPPER)
-  //
-  app.component(
-    'lcEditableList',
-    defineAsyncComponent(() => import('@/components/pageDesign/propsEditor/editableList.vue'))
-  )
-  app.component(
-    'lcIconPicker',
-    defineAsyncComponent(() => import('@/components/iconPicker/index.vue'))
-  )
-}
-//
-const installer = { install }
+
+
 //
 export {
-  installer,
+  install,
   lcPageRender,
   createGlobalContext,
   createAppContext,
@@ -66,10 +45,8 @@ export {
   vFullHeight,
   authentication,
   tools,
-  //Below are for designer
-  installDesigner,
-  installRouter,
-  installPlugin,
+  download,
+  locale,
 
   lcWorkspaceManager,
   lcAppEditorWithRouter,

@@ -1,17 +1,53 @@
 <template>
-  <div>
-    <div style="height:64px;width:64px;background-color:beige;"> 0</div>
-  <el-row style="border:1px solid red;">
-    <el-col :span="12" style="height:128px;background-color:aqua;">1</el-col>
-    <el-col :span="12" style="height:128px;background-color:blue;">2</el-col>
-    <el-col :span="12" style="height:128px;background-color:brown">3</el-col>
-    <el-col :span="12" style="height:128px;background-color:violet">4</el-col>
-    <div style="height:64px;width:64px;background-color:sienna;position:fixed;top:64px;left:64px;"> 5</div>
-  </el-row>
-</div>
+  <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form-item label="Approved by">
+      <el-input v-model="formInline.user" placeholder="Approved by" clearable />
+    </el-form-item>
+    <el-form-item label="Activity zone">
+      <el-input
+        v-model="formInline.region.address"
+        placeholder="Activity zone"
+        clearable
+      >
+
+      </el-input>
+    </el-form-item>
+    <el-form-item label="Activity time">
+      <el-date-picker
+        v-model="formInline.date"
+        type="date"
+        placeholder="Pick a date"
+        clearable
+      />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="onSubmit">Query</el-button>
+    </el-form-item>
+  </el-form>
+
+  {{ formInline }}
 </template>
 
 <script lang="ts" setup>
+import { reactive } from 'vue'
 
+const formInline = reactive({
+  user: '',
+  region:{},
+  date: '2024-04-21T16:00:00.000Z',
+})
 
+const onSubmit = () => {
+  console.log('submit!')
+}
 </script>
+
+<style>
+.demo-form-inline .el-input {
+  --el-input-width: 220px;
+}
+
+.demo-form-inline .el-select {
+  --el-select-width: 220px;
+}
+</style>

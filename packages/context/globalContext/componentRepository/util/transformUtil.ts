@@ -29,6 +29,7 @@ export function buildWidgetFunc(widget, option?,callback?: Function) {
 //Has a default slot children
 export function buildWidgetWithDefaultSlot(widget: any, paras, option?: object) {
   const result = buildWidgetBase(widget, paras, option)
+  // console.log('#######',JSON.stringify(paras.config),paras)
   result['#'] = buildPanel(paras.config)
   return result
 }

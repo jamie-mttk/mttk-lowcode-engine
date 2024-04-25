@@ -1,0 +1,73 @@
+// background-color: red;
+//This is the box area same as the choosed component
+.choosed-box {
+  min-width: 32px;
+  min-height: 32px;
+  //outline: var(--el-color-warning) dotted 2px;
+  outline: var(--el-color-success) dotted 2px;
+  outline-offset: 2px;
+  z-index: 998;
+
+  .resize-icon {
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    background-color: white;
+    border: 1px solid var(--el-color-primary);
+    border-radius: 50%;
+  }
+
+  //
+  .resize-left-top {
+    left: -15px;
+    top: -15px;
+    cursor: nwse-resize;
+  }
+
+  .resize-left-center {
+    left: -15px;
+    top: 50%;
+    margin-top: -10px;
+    cursor: ew-resize;
+  }
+
+  .resize-left-bottom {
+    left: -15px;
+    bottom: -15px;
+    cursor: nesw-resize;
+  }
+
+  .resize-right-top {
+    right: -15px;
+    top: -15px;
+    cursor: nesw-resize;
+  }
+
+  .resize-right-center {
+    right: -15px;
+    top: 50%;
+    margin-top: -10px;
+    cursor: ew-resize;
+  }
+
+  .resize-right-bottom {
+    right: -15px;
+    bottom: -15px;
+    cursor: nwse-resize;
+  }
+
+  .resize-center-top {
+    top: -15px;
+    left: 50%;
+    margin-left: -10px;
+    cursor: ns-resize;
+  }
+
+  .resize-center-bottom {
+    bottom: -15px;
+    left: 50%;
+    margin-left: -10px;
+    cursor: ns-resize;
+  }
+}
+

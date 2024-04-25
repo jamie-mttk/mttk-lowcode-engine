@@ -1,22 +1,26 @@
-import {buildPanel} from '@/context/globalContext/componentRepository/util/transformUtil'
-
+import { buildPanel } from '@/context/globalContext/componentRepository/util/transformUtil'
+import {t} from '@/lang/index'
 //
- const containerConfig = {
+const containerConfig = {
   key: '_container',
-  name: 'Container',
-  description: 'An components container,use to set style or visibility',
+  name: t('_.builtIn.basic.container.name'),
+  description: t('_.builtIn.basic.container.description'),
   icon: 'mdiCheckboxBlankOutline',
-  transform: function({config}) {
+  sequence: 3,
+  transform: function ({ config }) {
     //
-   return buildPanel(config)
+    return buildPanel(config)
   },
   editor: {
+    //empty init to init default slot
+    basic: { init:{} },
     display: {
       init: {
         style: {
           display: 'block',
           width: '100%',
-          'min-height': '32px',
+          //if height is not set,panel is automatically set to 100%,so we should set a fixed value here
+          'height': '320px',
           margin: '10px'
         }
       }

@@ -14,9 +14,12 @@ onMounted(() => {
     event.stopPropagation()
   }
 })
+//
+// const emit=defineEmits(['componentChoosed'])
 </script>
 
 <template>
+
   <FlexCanvas
     v-if="context.componentManager.renderMode.value == 'flex'"
     v-bind="$attrs"
@@ -29,37 +32,9 @@ onMounted(() => {
     v-model="model"
   >
   </DraggableCanvas>
+
 </template>
 
 <style lang="scss" scoped>
-.wrap-group {
-  min-height: 32px;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
 
-  .draggable-header {
-    min-height: 128px;
-    width: 100%;
-
-    background-color: var(--el-fill-color-lighter);
-    margin: 1px;
-  }
-
-  //   background-color: #00ffff;
-  // border: 1px groove #E0E0E0;
-  .draggable-item {
-    min-height: 32px;
-  }
-}
-
-// .wrap-group:hovor {
-//  // border: 1px solid #ff0000;
-// }
-
-// .component-ghost{
-//   background-color: #00ffff;
-//   border: 1px solid #ff0000;
-// }
 </style>

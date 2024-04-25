@@ -2,21 +2,21 @@
   <el-scrollbar height="520px">
     <el-alert  type="info" effect="dark" :closable="false"  >
             <template #title>
-                Total: {{ tableData.length }} Selected: {{modelValue.length}}
+                {{ $t('_.components.appManager.customizePlugin.total') }}: {{ tableData.length }} {{ $t('_.components.appManager.customizePlugin.selected') }}: {{modelValue.length}}
             </template>
             </el-alert>
         <el-table :data="tableData" ref="tableRef" style="width: 100%; " row-key="key" border default-expand-all
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50" />
-            <el-table-column prop="key" label="Key" sortable>
+            <el-table-column prop="key" :label="$t('_._.key')" sortable>
                 <template #default="{ row }">
                     <lc-icon :icon="row.icon"></lc-icon> {{ row.key }}
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="Name" sortable />
-            <el-table-column prop="description" label="Description" sortable />
-            <el-table-column prop="entry" label="Entry" width="120" sortable />
-            <el-table-column prop="sequence" label="Sequence" width="120" sortable />
+            <el-table-column prop="name" :label="$t('_._.name')" sortable />
+            <el-table-column prop="description" :label="$t('_._.description')" sortable />
+            <el-table-column prop="entry" :label="$t('_.components.appManager.customizePlugin.entry')" width="120" sortable />
+            <el-table-column prop="sequence" :label="$t('_._.sequence')" width="120" sortable />
         </el-table>
 
     </el-scrollbar>

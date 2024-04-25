@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, inject } from 'vue'
-import { ElMessageBox, ElMessage } from 'element-plus'
 import buildMain from './buildMain'
 
 const emit = defineEmits<{
@@ -23,7 +22,6 @@ const emit = defineEmits<{
 }>()
 //
 const globalContext = inject('globalContext')
-//
 const appContext = inject('appContext')
 
 //Wrap into computed, since the app context may not be loaded during the first evaluation

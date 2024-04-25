@@ -1,36 +1,36 @@
 import { paginationTransform } from './transform'
 import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil'
-
+import {t} from '@/lang/index'
 //pagination config
 const paginationConfig = {
   key: '_pagination',
-  name: 'Pagination',
-  description: 'Basic pagination',
+  name: t('_.builtIn.element.pagination.name'),
+  description: '',
   icon: 'mdiBookOpenPageVariantOutline',
   sequence: 41,
   transform: paginationTransform,
   editor: {
     basic: {
       ui: [
-        uiUtil.createInput('layout'),
-        uiUtil.createInputNumber('pager-count'),
-        uiUtil.createSwitch('small'),
-        uiUtil.createSwitch('background'),
-        uiUtil.createInput('page-sizes'),
-        uiUtil.createInput('prev-text'),
-        uiUtil.createIconPicker('prev-icon'),
-        uiUtil.createInput('next-text'),
-        uiUtil.createIconPicker('next-icon'),
-        uiUtil.createSwitch('disabled'),
-        uiUtil.createSwitch('hide-on-single-page'),
-        uiUtil.createSwitch('_sync_to_data', 'Synchronize currrent page and page size to data'),
-        uiUtil.createInput('_key-current-page', 'Field name of current page in model value'),
-        uiUtil.createInput('_key-total', 'Field name of total elements in model value'),
-        uiUtil.createInput('_key-page-count', 'Field name of page count in model value'),
-        uiUtil.createInput('_key-page-size', 'Field name of page size in model value')
+        uiUtil.createInput('layout',t('_.builtIn.element.pagination.layout')),
+        uiUtil.createInputNumber('pager-count',t('_.builtIn.element.pagination.pager-count')),
+        uiUtil.createSwitch('small',t('_.builtIn.element.pagination.small')),
+        uiUtil.createSwitch('background',t('_.builtIn.element.pagination.background')),
+        uiUtil.createInput('page-sizes',t('_.builtIn.element.pagination.page-size')),
+        uiUtil.createInput('prev-text',t('_.builtIn.element.pagination.prev-text')),
+        // uiUtil.createIconPicker('_prev-icon'),
+        uiUtil.createInput('next-text',t('_.builtIn.element.pagination.next-text')),
+        // uiUtil.createIconPicker('_next-icon'),
+        uiUtil.createSwitch('disabled',t('_.builtIn.element.pagination.disabled')),
+        uiUtil.createSwitch('hide-on-single-page',t('_.builtIn.element.pagination.hide-on-single-page')),
+        uiUtil.createSwitch('_sync_to_data', t('_.builtIn.element.pagination.sync_to_data')),
+        uiUtil.createInput('_key-current-page',t('_.builtIn.element.pagination.key-current-page')),
+        uiUtil.createInput('_key-total', t('_.builtIn.element.pagination.key-total')),
+        uiUtil.createInput('_key-page-count', t('_.builtIn.element.pagination.key-page-count')),
+        uiUtil.createInput('_key-page-size', t('_.builtIn.element.pagination.key-page-size'))
       ],
       init: {
-        layout: 'prev, pager, next, jumper, ->, total',
+        layout: 'prev, pager, next, jumper, total',
         'pager-count': 7,
         small: false,
         background: false,
@@ -41,6 +41,7 @@ const paginationConfig = {
         _sync_to_data: true,
         '_key-current-page': 'page',
         '_key-total': 'total',
+        '_key-page-count':'page-count',
         '_key-page-size': 'size'
       }
     },

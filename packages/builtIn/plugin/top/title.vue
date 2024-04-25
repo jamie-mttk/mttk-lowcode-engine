@@ -23,7 +23,7 @@ const title = computed(() => {
     return 'Name is not set'
   }
   if (context.codeManager.dirty.value) {
-    pageTitle = pageTitle + '---Modified'
+    pageTitle = pageTitle + ' *'
   }
   //
   return pageTitle

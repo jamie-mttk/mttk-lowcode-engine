@@ -14,16 +14,16 @@
 <script setup lang="ts">
 import { computed,inject } from 'vue'
 import {gridWidth} from './util'
-import {tools} from 'mttk-lowcode-engine'
+import {createUniqueString} from '@/utils/tools'
 //
 const context = inject('context')
-const gridId = computed(() => tools.createUniqueString())
+const gridId = computed(() => createUniqueString())
 // 
 const color = computed(() =>'#DCDFE6')
 const rectStyle = computed(() => ({ '--border-color': color.value }))
 
 const showGrid = computed(() => {
-  const showGrid = context.codeManager.getCode().showGrid || 'hide'
+  const showGrid = context.codeManager.getCode().settingAbsolute?.showGrid || 'hide'
   if (context.mode.value == 'edit') {
     return showGrid != 'hide'
   } else {

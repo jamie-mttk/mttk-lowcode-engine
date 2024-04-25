@@ -1,38 +1,38 @@
 <template>
-  <el-row style="margin: 16px" >
+  <el-row style="margin: 12px" >
     <el-col :span="24" :style="singleStyle" ref="target">
       <h2 style="margin: 16px 0 0 16px;" >{{ props.modelValue.name }}</h2>
       <div style="margin: 10px 0 0 16px; padding-right: 100px; min-height: 32px">
-        {{ props.modelValue.description }}
+        {{ props.modelValue.description }} 
       </div>
       <div
-        v-show="!isOutside"
+        v-show="!isOutside||isMobile().value"
         style="margin-top: 16px; display: flex; justify-content: center;"
       >
-        <div>
+ 
           <el-button-group>
             <el-button
-              type="primary"
+              type="primary" v-if="!isMobile().value"
               @click="emitAction('design')"
               v-data-auth:edit="props.modelValue"
-              >Design</el-button
+              >{{ $t('_.components.appManager.single.design') }}</el-button
             >
-            <el-button type="success" @click="emitAction('launch')">Launch</el-button>
+            <el-button type="success" @click="emitAction('launch')" >{{ $t('_.components.appManager.single.launch') }}</el-button>
             <el-button
-              type="default"
+              type="default" v-if="!isMobile().value"
               @click="emitAction('edit')"
               v-data-auth:edit="props.modelValue"
-              >Setting</el-button
+              >{{$t('_.components.appManager.single.setting')}}</el-button
             >
             <el-button
-              type="danger"
+              type="danger" v-if="!isMobile().value"
               @click="emitAction('delete')"
               v-data-auth:del="props.modelValue"
-              >Delete</el-button
+              >{{$t('_._.del')}}</el-button
             >
-            <DataAuthButton type="warning" :data="props.modelValue" resource="app" />
+            <DataAuthButton type="warning"  v-if="!isMobile().value" :data="props.modelValue" resource="app" />
           </el-button-group>
-        </div>
+
       </div>
     </el-col>
     <div style="position: absolute; top: 40px; right: 40px">
@@ -47,6 +47,7 @@ import { useMouseInElement } from '@vueuse/core'
 import { generateRandomColor } from '@/utils/tools'
 import lcIcon from '@/components/icon/index.vue'
 import DataAuthButton from '@/components/auth/DataAuthButton.vue'
+import {isMobile} from '../../../utils/tools'
 //
 const target = ref(null)
 const { isOutside } = useMouseInElement(target)

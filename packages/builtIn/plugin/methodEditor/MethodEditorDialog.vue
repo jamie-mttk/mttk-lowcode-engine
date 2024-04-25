@@ -1,34 +1,34 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="Method editor" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog v-model="dialogVisible" :title="$t('_.builtIn.plugin.methodEditor.dialogTitle')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form ref="dataEditorFormRef" :model="formData" label-width="120px">
 
 
-            <el-form-item label="Key" prop="key" required>
+            <el-form-item :label="$t('_._.key')" prop="key" required>
                 <el-input v-model="formData.key" />
             </el-form-item>
-            <el-form-item label="Description" prop="description">
+            <el-form-item :label="$t('_._.description')" prop="description">
                 <el-input v-model="formData.description" />
             </el-form-item>
-            <el-form-item label="Parameters" prop="paras" class="draggable-dummy">
+            <el-form-item :label="$t('_.builtIn.plugin.methodEditor.parameter')" prop="paras" class="draggable-dummy">
                 <el-table :data="formData.paras" style="width: 100%" row-key="key">
-                    <el-table-column  label="Drag">
+                    <el-table-column  :label="$t('_.builtIn.plugin.methodEditor.drag')">
                         <lcIcon icon="mdiDrag" class="table-drag-handle" size="2em"></lcIcon>
                         </el-table-column>
                   
-                    <el-table-column prop="key" label="Key" />
-                    <el-table-column prop="description" label="Description" />
-                    <el-table-column prop="type" label="Data type" />
-                    <el-table-column fixed="right" label="Operations" width="240px">
+                    <el-table-column prop="key" :label=" $t('_._.key') " />
+                    <el-table-column prop="description" :label=" $t('_._.description')" />
+                    <el-table-column prop="type" :label="$t('_.builtIn.plugin.methodEditor.parameter_type')" />
+                    <el-table-column fixed="right" :label=" $t('_._.operation')" width="240px">
                         <template #default="sp">
                             <el-button-group>
-                                <el-button type="primary" @click="handleAdd()">Add</el-button>
-                                <el-button type="success" @click="handleEdit(sp)">Edit</el-button>
-                                <el-button type="danger" @click="handleDelete(sp)">Delete</el-button>
+                                <el-button type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button>
+                                <el-button type="success" @click="handleEdit(sp)">{{ $t('_._.edit') }}</el-button>
+                                <el-button type="danger" @click="handleDelete(sp)">{{ $t('_._.del') }}</el-button>
                             </el-button-group>
                         </template>
                     </el-table-column>
                     <template #empty>
-                        Please <el-button type="primary" @click="handleAdd()">Add</el-button> a new record
+                        <el-button type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button> 
                     </template>
                 </el-table>
             </el-form-item>
@@ -37,14 +37,9 @@
                     <el-popover placement="bottom" title="How to use" :width="640" trigger="click"
                         content="this is content, this is content, this is content">
                         <template #reference>
-                            <span> Code <lcIcon icon="mdiHelpCircleOutline" size="1.2em"></lcIcon></span>
+                            <span> {{$t('_.builtIn.plugin.methodEditor.code')}} <lcIcon icon="mdiHelpCircleOutline" size="1.2em"></lcIcon></span>
                         </template>
-                        The first parameter of method is c which is page context.<br>
-                        If the parameter names are provided above, you can use it directly.<br>
-                        Otherwise,argument names will be set to arg0/arg1...<br>
-                        And please also note, if method is triggered by event, warpContext will be added automatically.<br>
-                        You need to set parameter name manually,otherwise it is arg0
-                        as the second parameter after context.
+                        {{$t('_.builtIn.plugin.methodEditor.codePrompt')}}
                     </el-popover>
                 </template>
                 <b-ace-editor v-model="formData.code" lang="javascript" width="100%" height="40vh" :readonly="false"
@@ -53,9 +48,9 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button @click="dialogVisible = false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    Save
+                    {{ $t('_._.save') }}
                 </el-button>
                 <!-- <el-button @click="test">Test</el-button> -->
             </span>

@@ -32,7 +32,7 @@ export default function useComponentRepository(globalContext) {
     folders.push(folder)
   }
   //
-  function registComponent(component: object, folder?: object) {
+  async function registComponent(component: object, folder?: object) {
     //Useless,removed since it only called once
     // function is imported as  ()=>import('./card/index'),
     // if(typeof component=='function'){
@@ -41,9 +41,9 @@ export default function useComponentRepository(globalContext) {
     //if it is a Promise
     //Promise is imported as above or import('./button/index'),
     if (component instanceof Promise) {
-      component.then(function (data) {
-        registerComponentInternal(data.default, folder)
-      })
+      const data = await component
+      registerComponentInternal(data.default, folder)
+      
     } else {
       registerComponentInternal(component, folder)
     }
@@ -59,13 +59,13 @@ export default function useComponentRepository(globalContext) {
     components.sort((item1, item2) => item1.sequence || 0 > item2.sequence || 0)
   }
   //Regist folder and components array(set the folder to the given folder)
-  function registerComponents(folder: object, componentConfigs: Array<object>) {
+  async function registerComponents(folder: object, componentConfigs: Array<object>) {
     registFolder(folder)
 
     //
     for (const componentConfig of componentConfigs) {
       //
-      registComponent(componentConfig, folder)
+      await registComponent(componentConfig, folder)
     }
   }
 

@@ -2,15 +2,14 @@ import { isRef, computed } from 'vue'
 export function selectTransform(config: any, itemConfig, pageContext?: object) {
   // console.log(config)
   //Automatically add filterable to true is allow-create is set
-  if(config['allow-create']){
-    config['filterable']=true
+  if (config['allow-create']) {
+    config['filterable'] = true
   }
-//
-  let options=itemConfig['~options']
+  //
+  let options = itemConfig['~options']
   if (isRef(options)) {
     options = options.value
   }
-
   //
   if (!options) {
     return
@@ -19,20 +18,18 @@ export function selectTransform(config: any, itemConfig, pageContext?: object) {
   if (Array.isArray(options)) {
     //build wrap array
     config['#'] = parseOptionsArray(options)
-
   } else if (typeof options == 'function') {
     //If the function returns a Promise, we should await here
     config['#'] = parseOptionsFunction(options)
   } else if (typeof options == 'string') {
-
     if (options == '#method') {
-      config['#'] =  methodOptions(pageContext).value
+      config['#'] = methodOptions(pageContext).value
     } else if (options == '#data') {
-      config['#'] =  dataOptions(pageContext).value
+      config['#'] = dataOptions(pageContext).value
     } else if (options == '#computed') {
-      config['#'] =  computedOptions(pageContext).value
+      config['#'] = computedOptions(pageContext).value
     } else if (options == '#api') {
-      config['#'] =  apiOptions(pageContext).value
+      config['#'] = apiOptions(pageContext).value
     } else {
       throw 'If options is string,it should be some special values,now it is' + options
     }
@@ -53,16 +50,15 @@ function parseOptionsArray(options) {
       //
       const vv = parseOptionString(o)
       result.push({
-        '~component': 'el-option' ,
-          label: vv[1],
-          value: vv[0]
+        '~component': 'el-option',
+        label: vv[1],
+        value: vv[0]
       })
     } else if (typeof o == 'object') {
       result.push({
-        '~component': 'el-option' ,      
-          label: o.label,
-          value: o.value
-        
+        '~component': 'el-option',
+        label: o.label,
+        value: o.value
       })
     } else {
       throw 'Unsupported value option type:' + typeof o
@@ -89,42 +85,54 @@ function parseOptionString(o: string) {
 //
 function dataOptions(context) {
   //all data list
-  return  computed(() =>{
+  return computed(() => {
     // console.log('3@@@REBUILD')
-    return context.codeManager.getCode().data.map((item: Object) => {return {
-      '~component': 'el-option' ,
-     value: item.key, label: item.description 
-    }})}
-  )
+    return context.codeManager.getCode().data.map((item: Object) => {
+      return {
+        '~component': 'el-option',
+        value: item.key,
+        label: item.description
+      }
+    })
+  })
 }
 //
 function computedOptions(context) {
   //all data list
-  return  computed(() =>
-    context.codeManager.getCode().computed.map((item: Object) => {return {
-      '~component': 'el-option' ,
-       value: item.key, label: item.description 
-    }})
+  return computed(() =>
+    context.codeManager.getCode().computed.map((item: Object) => {
+      return {
+        '~component': 'el-option',
+        value: item.key,
+        label: item.description
+      }
+    })
   )
 }
 //
 function apiOptions(context) {
   //all data list
-  return  computed(() =>
-    context.codeManager.getCode().apis.map((item: Object) => {return {
-      '~component': 'el-option' ,
-      value: item.key, label: item.description 
-    }})
+  return computed(() =>
+    context.codeManager.getCode().apis.map((item: Object) => {
+      return {
+        '~component': 'el-option',
+        value: item.key,
+        label: item.description
+      }
+    })
   )
 }
 //
 function methodOptions(context) {
   //all data list
-  return  computed(() =>
-    context.codeManager.getCode().methods.map((item: Object) => {return {
-      '~component': 'el-option' ,
-      value: item.key, label: item.description 
-    }})
+  return computed(() =>
+    context.codeManager.getCode().methods.map((item: Object) => {
+      return {
+        '~component': 'el-option',
+        value: item.key,
+        label: item.description
+      }
+    })
   )
 }
 // //Computed list

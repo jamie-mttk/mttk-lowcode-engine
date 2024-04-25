@@ -1,21 +1,22 @@
 /**
- * 从HTTP反馈中处理下载
- * @param {*} response          HTTP反馈
- * @param {*} defaultFileName   缺省文件名
+ * Download from HTTP response
+ * This is used to call server to get data first and then handle download manually
+ * @param {*} response          HTTP response
+ * @param {*} defaultFileName   default file name
  */
-export function download(response, defaultFileName) {
-  let contentType = response.headers["content-type"]
+export function downloadHttpResponse(response, defaultFileName) {
+  const contentType = response.headers["content-type"]
     ? response.headers["content-type"]
     : "application/octet-stream";
 
   let filename = defaultFileName;
   if (response.headers["content-disposition"]) {
     let temp = response.headers["content-disposition"];
-    let index = temp.indexOf("filename=");
+    const index = temp.indexOf("filename=");
     if (index >= 0) {
-      temp = temp.substr(index + 9); //+9是去掉filename=的长度
+      temp = temp.substr(index + 9); //+9 is to remove the length of "filename="
       filename = temp;
-      //处理可能的中文
+      //Handle possible Chinese file name
       filename = decodeURI(filename)
     }
   }
@@ -24,23 +25,28 @@ export function download(response, defaultFileName) {
 
 }
 /**
- * 下载数据
- * @param {*} data        要下载的数据 
+ * Download data to file name
+ * @param {*} data        Data to download
  * @param {*} contentType  
- * @param {*} filename    文件名
+ * @param {*} filename    file name
  */
 export function downloadData(data, contentType, filename) {
-  let blob = new Blob([data], {
+  const blob = new Blob([data], {
     type: contentType
   });
-  var downloadElement = document.createElement("a");
-  var href = window.URL.createObjectURL(blob); //创建下载的链接
-  downloadElement.href = href;
-  downloadElement.download = filename; //下载后文件名
-  document.body.appendChild(downloadElement);
-  downloadElement.click(); //点击下载
-  document.body.removeChild(downloadElement); //下载完成移除元素
-  window.URL.revokeObjectURL(href); //释放掉blob对象
+
+  const url = window.URL.createObjectURL(blob); //Create download URL
+  downloadUrl(url,filename)
 }
 
-export default download
+//Download the given URL to filename
+export function downloadUrl(url, filename) {
+  const downloadElement = document.createElement("a");
+  downloadElement.style = 'display: none'
+  downloadElement.href=url
+  downloadElement.download = filename; //download file name
+  document.body.appendChild(downloadElement);
+  downloadElement.click(); //Simulate click download
+  document.body.removeChild(downloadElement); //Remove element
+  window.URL.revokeObjectURL(url); //Release blob resource
+}

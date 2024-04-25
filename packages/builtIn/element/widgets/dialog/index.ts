@@ -1,16 +1,15 @@
 
 import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil'
 import {  buildWidgetWithDefaultSlot,buildPanel } from '@/context/globalContext/componentRepository/util/transformUtil'
+import {t} from '@/lang/index'
 //dialog config
 const dialogConfig = {
   key: '_dialog',
-  name: 'Dialog',
-  description: 'Dialog',
+  name: t('_.builtIn.element.dialog.name'),
+  description: '',
   icon: 'mdiDockWindow',
   sequence: 31,
   transform: function ({config,  context}) {
- 
-
     if (context.mode.value == 'edit') {
       //edit - use card to simulate
       const result = buildWidgetWithDefaultSlot('el-card',{config})
@@ -21,7 +20,7 @@ const dialogConfig = {
       //Always show
 
       //The attribute name of card tile is header
-      result.header = (result.title || 'No title') + ' [Please note: This drawer is NOT WYSIWYG]'
+      result.header = (result.title || 'No title') + t('_.builtIn.element.dialog.prompt')
     
 
       //Set style so the card can float from CSS flow
@@ -48,17 +47,17 @@ const dialogConfig = {
   editor: {
     basic: {
       ui: [
-        uiUtil.createInput('title'),
-        uiUtil.createInput('width'),
-        uiUtil.createSwitch('modal', 'Show shadowing layer/Modal'),
-        uiUtil.createSwitch('close-on-click-modal', 'Close on click modal'),
-        uiUtil.createSwitch('close-on-press-escape', 'Close on press escape'),
-        uiUtil.createSwitch('show-close', 'Show close'),
-        uiUtil.createSwitch('append-to-body', 'Append to body'),
-        uiUtil.createSwitch('destroy-on-close', 'Destroy on close'),
-        uiUtil.createSwitch('fullscreen'),
-        uiUtil.createSwitch('draggable'),
-        uiUtil.createSwitch('center', 'Header and footer align to center')
+        uiUtil.createInput('title',t('_.builtIn.element.dialog.title')),
+        uiUtil.createInput('width',t('_.builtIn.element.dialog.width')),
+        uiUtil.createSwitch('modal', t('_.builtIn.element.dialog.modal')),
+        uiUtil.createSwitch('close-on-click-modal', t('_.builtIn.element.dialog.closeOnClick')),
+        uiUtil.createSwitch('close-on-press-escape', t('_.builtIn.element.dialog.closeOnEscape')),
+        uiUtil.createSwitch('show-close',  t('_.builtIn.element.dialog.showClose')),
+        uiUtil.createSwitch('append-to-body',  t('_.builtIn.element.dialog.appendToBody')),
+        uiUtil.createSwitch('destroy-on-close',  t('_.builtIn.element.dialog.destroyOnClose')),
+        uiUtil.createSwitch('fullscreen',  t('_.builtIn.element.dialog.fullscreen')),
+        uiUtil.createSwitch('draggable',  t('_.builtIn.element.dialog.draggable')),
+        uiUtil.createSwitch('center',  t('_.builtIn.element.dialog.center'))
       ],
       init: {
         title: 'Dialog default title',

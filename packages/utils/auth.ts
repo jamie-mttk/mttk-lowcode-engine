@@ -65,7 +65,7 @@ export function hasAuth(value) {
     return true
   }
   //opeartion check
-  return auth.includes(vv[1])
+  return auth.includes(vv[1])|| auth.includes('all')||(auth.includes('all_read') && vv[1]=='access')
 }
 //Check the given resouce has the operation data auth
 export function hasDataAuth(operation,resource) {

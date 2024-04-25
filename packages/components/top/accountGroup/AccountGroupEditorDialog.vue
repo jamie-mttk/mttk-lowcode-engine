@@ -1,22 +1,22 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="用户组编辑" :destroy-on-close="true"
+    <el-dialog v-model="dialogVisible" :title="$t('_.components.top.accountGroup.dialogTitle')" :destroy-on-close="true"
         :close-on-click-modal="false" :close-on-press-escape="false">
 
         <el-form ref="dataEditorFormRef" :model="formData" label-width="120px">
         
-            <el-form-item label="名称" prop="name" required>
+            <el-form-item :label="$t('_._.name')" prop="name" required>
                 <el-input v-model="formData.name" />
             </el-form-item>
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="$t('_._.description')" prop="description">
                 <el-input v-model="formData.description" />
             </el-form-item>
          
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button @click="dialogVisible = false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    保存
+                    {{ $t('_._.save') }}
                 </el-button>
             </span>
         </template>
@@ -24,9 +24,9 @@
 </template>
   
 <script lang="ts" setup>
-import { ref, watch, inject, onMounted } from 'vue'
+import { ref,  } from 'vue'
 import type { FormInstance } from 'element-plus'
-const globalContext = inject('globalContext')
+
 
 
 //Show this dialog
@@ -47,10 +47,6 @@ const formData = ref({})
 let callbackSaved: Function;
 //
 const dataEditorFormRef = ref<FormInstance>()
-
-
-
-
 //
 const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return
@@ -65,8 +61,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         }
     })
 }
-
-
 //
 defineExpose({ show })
 </script>

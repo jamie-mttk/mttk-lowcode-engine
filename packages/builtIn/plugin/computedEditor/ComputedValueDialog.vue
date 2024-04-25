@@ -1,10 +1,10 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="Computed value">
+  <el-dialog v-model="dialogVisible" :title="$t('_.builtIn.plugin.computedEditor.valueDialogTitle')">
     <b-ace-editor v-model="jsonData" lang="json" width="100%" height="50vh" :readonly="false"
       :font-size="14"></b-ace-editor>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Close</el-button>
+        <el-button @click="dialogVisible = false">{{ $t('_._.close') }}</el-button>
 
       </span>
     </template>

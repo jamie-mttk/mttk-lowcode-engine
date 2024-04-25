@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 100%"  class="page-designer-main">
-    <el-header style="padding: 0px; margin: 0 0 8px 0; height: 48px">
+    <el-header style="padding: 0px; margin: 0; height: 40px">
       <MttkWrapComp :config="configTop"></MttkWrapComp>
     </el-header>
     <!-- <Transition  
@@ -8,19 +8,19 @@
       name="custom-classes"
       enter-active-class=" page_enter"
       leave-active-class=" page_leave"
-    > -->
-    <div ref="previewPageRenderRef">
-      <el-container v-if="isEditMode" >
+    > --> 
+    <div ref="previewPageRenderRef" id="lcViewMainArea" style="margin-top:2px">
+      <el-container v-if="isEditMode">
         <el-aside width="auto">
           <!-- <MttkWrapComp :config="configLeft"></MttkWrapComp> -->
-          <ToolbarLeft></ToolbarLeft>
+          <ToolbarLeft style="margin-top:2px;"></ToolbarLeft>
         </el-aside>
         <el-main style="padding: 0 0 0 8px;">
           <MttkWrapComp :config="configMain"></MttkWrapComp>
         </el-main>
       </el-container>
-      <el-row v-else>
-        <el-col :span="24" >
+      <el-row v-else style="height:100%;">
+        <el-col :span="24" style="max-height:100vh;overflow-y: auto;">
           <PageRender :context="context" ></PageRender>
         </el-col>
       </el-row>
@@ -84,7 +84,7 @@ const configTop = buildTop(context)
 const configMain = buildMain(context)
 //
 const previewPageRenderRef=ref()
-const { isFullscreen, enter, exit, toggle } = useFullscreen(previewPageRenderRef)
+const { isFullscreen, enter,  } = useFullscreen(previewPageRenderRef)
 context.mitt.on('previewFullSCreen',()=>{
 
   enter()

@@ -66,7 +66,8 @@ const tableData = [
 const config = {
   '~': 'el-table',
   data: tableData,
-  style: { width: '100%' },
+ // style: { width: '60%' },
+ style:'width:60%;height:320px;background-color:red;padding:12px;',
   '#': [
     {
       '~': 'el-table-column',

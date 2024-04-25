@@ -1,37 +1,30 @@
 <script lang="ts" setup>
-import { ref, computed, reactive, inject } from 'vue'
+import { ref, computed, onUnmounted, inject } from 'vue'
 import { watchPausable } from '@vueuse/core'
 
 //Current selected row,use to make it editable
 const currentRow = ref({})
 //
-let props = defineProps({
-    modelValue: {
-        type: Object,
-        required: true,
-        default() {
-            return {}
-        }
-    },
-})
+const model=defineModel({ type: Object})
 // const emit = defineEmits<{
 //     (e: 'update:modelValue', value: Object): void
 // }>()
 //
 const context = inject('context')
 //Whether component is choosed
-const isChoosed = computed(() => {    //
-    const choosed = context.choosedManager.get()
-    return choosed && choosed.key
-})
+// const isChoosed = computed(() => {   
+//     const choosed = context.choosedManager.get()
+//     return choosed && choosed.key
+// })
 //Build from props
 const tableData = ref([])
 const { pause, resume } = watchPausable(
-    () => props.modelValue,
+    () => model.value,
     () => {
+        //
         const result = []
-        for (const k of Object.keys(props.modelValue)) {
-            result.push({ name: k, value: props.modelValue[k] })
+        for (const k of Object.keys(model.value)) {
+            result.push({ name: k, value: model.value[k] })
         }
         tableData.value = result
     }, {
@@ -45,7 +38,7 @@ function handleRowClick(row) {
 }
 //Add a new style
 function addNewStyle() {
-    //console.log(isRef(props.modelValue)+'~~~'+isReactive(props.modelValue))
+    //console.log(isRef(model.value)+'~~~'+isReactive(model.value))
     tableData.value.push({})
 }
 //Delete from
@@ -56,12 +49,17 @@ function deleteRow(sp) {
     updateBack();
 }
 //
+onUnmounted(()=>{
+    updateBack()
+})
+//
 function updateBack() {
+
     pause()
     //Delete later,the keys which has been changed or deleted
-    for (const k of Object.keys(props.modelValue)) {
+    for (const k of Object.keys(model.value)) {
         if (!styleExist(k)) {
-            delete props.modelValue[k]
+            delete model.value[k]
         }
     }
     //
@@ -70,10 +68,10 @@ function updateBack() {
             continue;
         }
         //
-        props.modelValue[line.name] = line.value
+        model.value[line.name] = line.value
         //
         //
-        //emit("update:modelValue", props.modelValue)
+        //emit("update:modelValue", model.value)
     }
     //
     resume()
@@ -90,19 +88,19 @@ function styleExist(name: string) {
 </script>
 
 <template>
-    <div v-show="isChoosed">
-        <el-table :data="tableData" style="width: 100%" :show-header="false"  empty-text="Press button below"
+    <div style="width:100%;">
+        <el-table :data="tableData" style="width: 100%" :show-header="false"  
             @row-click="handleRowClick" class="styleEditorTable">
             <el-table-column prop="name" label="Name">
                 <template #default="sp">
-                    <el-input v-model="sp.row.name" v-if="currentRow == sp.row"  @change="updateBack"></el-input>
+                    <el-input v-model="sp.row.name" v-if="currentRow == sp.row"  @change="updateBack" @blur="updateBack"></el-input>
                     <span v-else>{{ sp.row.name || 'Empty' }}</span>
                 </template>
             </el-table-column>
 
             <el-table-column prop="value" label="Value">
                 <template #default="sp">
-                    <el-input v-model="sp.row.value" v-if="currentRow == sp.row"  @change="updateBack"></el-input>
+                    <el-input v-model="sp.row.value" v-if="currentRow == sp.row"  @change="updateBack" @blur="updateBack"></el-input>
                     <span v-else>{{ sp.row.value }}</span>
                 </template>
             </el-table-column>
@@ -114,15 +112,13 @@ function styleExist(name: string) {
                 </template>
             </el-table-column>
         </el-table>
-        <el-button @click="addNewStyle" style="margin-top:6px;">
+        <el-button @click="addNewStyle" style="margin-top:6px;width:100%;">
             <template #icon>
                 <lc-icon icon="mdiPlus"></lc-icon>
             </template>
-            Add a new style</el-button>
+            {{ $t('_._.add') }}</el-button>
     </div>
-    <div v-show="!isChoosed">
-        No component is choosed
-    </div>
+  
 </template>
 <style lang="scss">
 .styleEditorTable  .cell{

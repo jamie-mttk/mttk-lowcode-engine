@@ -3,9 +3,14 @@ import * as transformUtil from '@/context/globalContext/componentRepository/util
 
 export function tableTransform({config, data,context}) {
 
-  const result=transformUtil.buildWidget('el-table',config)
+  const result=transformUtil.buildWidget('el-table',{config})
+
   result.data=data
   result['#'] =buildColumns(config,context)
+  //
+  // console.log(result)
+  //
+
   return result
 }
 

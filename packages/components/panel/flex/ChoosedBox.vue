@@ -1,54 +1,58 @@
 <script setup lang="ts">
-import {  computed, inject } from 'vue'
-import { useElementBounding } from '@vueuse/core'
+import { computed, inject } from 'vue'
 
+import useResizeAndMove from '../resizeAndMove/useResizeAndMove'
 //
-//Choosed item
+//
+const props=defineProps(['modelValue'])
+const { choosed, trggerResize, handleMouseMove, trggerDone, choosedBounding ,isThisPanelChoosed} = useResizeAndMove(props.modelValue)
+//
 const context = inject('context')
-const choosed = computed(() => context.choosedManager.get())
-const contextWrap = inject('contextWrap')
-//choose component real width and height
-const realChosoedSize = computed(() => {
-  const el = contextWrap.getRef(choosed.value.key)
-  //Here useElementBounding is better than useElementSize because the width/height returned includes the padding/margin
-  return useElementBounding(el)
-})
-
 //
 const choosedBoxStyle = computed(() => {
-  if (!choosed.value || choosed.value.type == '_container' || choosed.value.type == undefined) {
-    return { display: 'none' }
-  } else {
-    const result = {
-      top: realChosoedSize.value.top.value + 'px',
-      left: realChosoedSize.value.left.value + 'px',
-      width: realChosoedSize.value.width.value + 'px',
-      height: realChosoedSize.value.height.value + 'px'
-    }
 
-    //
-    return result
+  if (
+    context.mode.value == 'view' ||
+    !choosed.value ||
+    choosed.value.type == '_container' ||
+    choosed.value.type == undefined|| !isThisPanelChoosed()
+  ) {
+    return { display: 'none' }
   }
 
+  //
+  const result = {
+    top: choosedBounding.value.top.value + 'px',
+    left: choosedBounding.value.left.value + 'px',
+    width: choosedBounding.value.width.value + 'px',
+    height: choosedBounding.value.height.value + 'px'
+  }
+
+  //
+  return result
 })
 
-// @mousedown.prevent.stop="handleMouseDown"
-// function handleMouseDown() {
-//   //Do nohting, just prevent the event bubble
-// }
+
+//
+defineExpose({ handleMouseMove, trggerDone })
 </script>
 <template>
-  <div class="choosed-box" :style="choosedBoxStyle" >
-   
-  </div>
+  <!--Teleport to body otherwise the choosed box will capture the mouse down event of the components inside child panel
+  This will cause child component can not be choosed if it's parent container is choosed-->
+  <Teleport to="body">
+    <div class="choosed-box choosed-box-flex" :style="choosedBoxStyle" >
+      <div
+        @mousedown.stop="trggerResize('resize-cb')"
+        class="resize-icon resize-center-bottom"
+      ></div>
+    </div>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>
-.choosed-box {
+@import '../resizeAndMove/resizeAndMove.scss';
+
+.choosed-box-flex {
   position: fixed;
-  min-height: 32px;
-  min-width: 32px;
-  outline:  var(--el-color-warning) dotted 2px;
-  z-index:998;//the choosed wrap is 999
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="API editor" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog v-model="dialogVisible" :title="$t('_.builtIn.plugin.apiEditor.dialogTitle')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form ref="dataEditorFormRef" :model="formData"  label-width="240px">
-            <el-form-item label="Key"  prop="key" required>
+            <el-form-item :label="$t('_._.key')"  prop="key" required>
                 <el-input v-model="formData.key" />
             </el-form-item>
-            <el-form-item label="Description"  prop="description" >
+            <el-form-item :label="$t('_._.description')"  prop="description" >
                 <el-input v-model="formData.description" />
             </el-form-item>
-            <el-form-item label="Method"  prop="method" required>
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.method')"  prop="method" required>
                 <el-select v-model="formData.method" >
                     <el-option  label="GET" value="GET" />
                     <el-option  label="PUT" value="PUT" />
@@ -15,51 +15,51 @@
                     <el-option  label="DELETE" value="DELETE" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="URL"  prop="url" required>
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.url')"  prop="url" required>
                 <el-input v-model="formData.url" />
             </el-form-item>
-            <el-form-item label="Request type"  prop="requestType" required>
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.requestType')"  prop="requestType" required>
                 <el-select v-model="formData.requestType" >
-                    <el-option  label="None" value="none" />
-                    <el-option  label="Para" value="para" />
+                    <el-option :label="$t('_.builtIn.plugin.apiEditor.data.requestType_none')" value="none" />
+                    <el-option :label="$t('_.builtIn.plugin.apiEditor.data.requestType_para')" value="para" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="Request content mode"  prop="requestMode" required v-if="formData.requestType!='none'">
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.requestMode')"  prop="requestMode" required v-if="formData.requestType!='none'">
                 <el-select v-model="formData.requestMode" >
-                    <el-option  label="Data" value="data" />
-                    <el-option  label="Computed" value="computed" />
+                    <el-option  :label="$t('_.builtIn.plugin.apiEditor.data.requestMode_data')" value="data" />
+                    <el-option  :label="$t('_.builtIn.plugin.apiEditor.data.requestMode_computed')" value="computed" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="Request content value[Data]"  prop="requestContentValueData" required v-if="formData.requestMode=='data'">
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.requestMode_data')"  prop="requestContentValueData" required v-if="formData.requestMode=='data'">
                 <el-select v-model="formData.requestContentValueData" >
                     <el-option  v-for="d in dataList" :key="d.key" :label="d.description" :value="d.key" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="Request content value[Computed]"  prop="requestContentValueComputed" required  v-if="formData.requestMode=='computed'">
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.requestMode_computed')"  prop="requestContentValueComputed" required  v-if="formData.requestMode=='computed'">
                 <el-select v-model="formData.requestContentValueComputed" >
                     <el-option  v-for="d in computedList" :key="d.key" :label="d.description" :value="d.key" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="Response mode"  prop="responseMode" required>
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.responseMode')"  prop="responseMode" required>
                 <el-select v-model="formData.responseMode" >
-                    <el-option  label="None" value="none" />
-                    <el-option  label="Data" value="data" />
+                    <el-option :label="$t('_.builtIn.plugin.apiEditor.data.responseMode_none')" value="none" />
+                    <el-option :label="$t('_.builtIn.plugin.apiEditor.data.responseMode_data')" value="data" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="Response value"  prop="responseValue" required v-if="formData.responseMode!='none'">
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.responseValue')"  prop="responseValue" required v-if="formData.responseMode!='none'">
                 <el-select v-model="formData.responseValue" >
                     <el-option  v-for="d in dataList" :key="d.key" :label="d.description" :value="d.key" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="Response expression"  prop="responseExpression" v-if="formData.responseMode!='none'">
+            <el-form-item :label="$t('_.builtIn.plugin.apiEditor.data.responseExpression')"  prop="responseExpression" v-if="formData.responseMode!='none'">
                 <el-input v-model="formData.responseExpression" />
             </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible=false">Cancel</el-button>
+                <el-button @click="dialogVisible=false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    Save
+                    {{ $t('_._.save') }}
                 </el-button>
             </span>
         </template>

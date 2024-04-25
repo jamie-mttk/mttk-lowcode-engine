@@ -1,7 +1,9 @@
 <template>
   <div class="toolbar-table-container">
     <div class="lc-common-toolbar toolbar" style="background-color: var(--el-color-primary)">
-      <div class="left" style="font-weight: bold; color: var(--el-color-white)">Pages</div>
+      <div class="left" style="font-weight: bold; color: var(--el-color-white)">
+        {{ $t('_.components.appEditor.pageEditor.title') }}
+      </div>
       <el-input v-model="filter" placeholder="Input to filter" class="middle" clearable></el-input>
 
       <el-button-group class="right">
@@ -9,17 +11,16 @@
           <template #icon>
             <lc-icon icon="mdiRefresh"></lc-icon>
           </template>
-          Refresh</el-button
+          {{ $t('_._.refresh') }}</el-button
         >
         <el-button @click="handleAdd" v-auth:page_add>
-          <template #icon>
-            <lc-icon icon="mdiPlus"></lc-icon> </template
-          >Add page</el-button
+          <template #icon> <lc-icon icon="mdiPlus"></lc-icon> </template
+          >{{ $t('_.components.appEditor.pageEditor.add') }}</el-button
         >
-        <el-button @click="handleBatchExport">
+        <!-- <el-button @click="handleBatchExport">
           <template #icon>
             <lc-icon icon="mdiExport"></lc-icon> </template
-          >Batch export</el-button
+          >{{ $t('_.components.appEditor.pageEditor.batchExport') }}</el-button
         >
         <el-upload
           style="display: inline-block; margin-top: 2px"
@@ -34,47 +35,58 @@
           <el-button>
             <template #icon>
               <lc-icon icon="mdiImport"></lc-icon> </template
-            >Import</el-button
+            >{{ $t('_.components.appEditor.pageEditor.import') }}</el-button
           >
-        </el-upload>
+        </el-upload> -->
       </el-button-group>
     </div>
 
     <el-table
       :data="filteredData"
       :highlight-current-row="true"
-      table-layout="fixed"     
+      table-layout="fixed"
       ref="pageEditorTableRef"
       class="table-area"
       v-fullHeight="8"
+      @row-click="handleRowClick"
     >
       <el-table-column type="selection" width="55" />
-      <el-table-column prop="name" label="Name" sortable>
+      <el-table-column prop="name" :label="$t('_._.name')" sortable>
         <template #default="sp">
           <lc-icon :icon="sp.row.icon || ''" size="medium" style="margin-right: 16px"></lc-icon>
           {{ sp.row.name }}
         </template>
       </el-table-column>
-      <el-table-column prop="sequence" label="Sequence" sortable width="120" />
-      <el-table-column prop="menu_NAME" label="Menu" sortable width="240" />
-      <el-table-column prop="_updateTime" label="Last update" sortable width="180">
+      <el-table-column prop="sequence" :label="$t('_._.sequence')" sortable width="120" />
+      <el-table-column
+        prop="menu_NAME"
+        :label="$t('_.components.appEditor.pageEditor.data.menu')"
+        sortable
+        width="240"
+      />
+      <el-table-column prop="_updateTime" :label="$t('_._.updateTime')" sortable width="180">
         <template #default="sp">
           {{ formatMongoDate(sp.row['_updateTime']) }}
         </template>
       </el-table-column>
-      <el-table-column label="Operations" width="380">
+      <el-table-column :label="$t('_._.operation')" width="380">
         <template #default="sp">
           <el-button-group>
-            <el-button @click="handleDesign(sp.row['_id'])" v-data-auth:edit="sp.row">Design</el-button>
-            <el-button @click="handleEdit(sp)" v-data-auth:edit="sp.row">Edit</el-button>
-            <el-button @click="handleDelete(sp)" v-data-auth:del="sp.row">Delete</el-button>
-            <el-button @click="handleCopy(sp)" v-auth:page_add>Copy</el-button>
+            <el-button @click="handleDesign(sp.row['_id'])" v-data-auth:edit="sp.row">{{
+              $t('_.components.appEditor.pageEditor.design')
+            }}</el-button>
+            <el-button @click="handleEdit(sp)" v-data-auth:edit="sp.row">{{
+              $t('_._.edit')
+            }}</el-button>
+            <el-button @click="handleDelete(sp)" v-data-auth:del="sp.row">{{
+              $t('_._.del')
+            }}</el-button>
+            <el-button @click="handleCopy(sp)" v-auth:page_add>{{ $t('_._.copy') }}</el-button>
             <DataAuthButton :data="sp.row" resource="page" />
           </el-button-group>
         </template>
       </el-table-column>
     </el-table>
-
   </div>
   <PageEditorDialog ref="pageEditorDialogRef"></PageEditorDialog>
 </template>
@@ -86,10 +98,13 @@ import { ref, computed, nextTick, watch, inject } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import PageEditorDialog from './PageEditorDialog.vue'
 import { formatMongoDate } from '@/utils/tools'
-import download from '@/utils/download'
+import { downloadHttpResponse } from '@/utils/download'
 import DataAuthButton from '@/components/auth/DataAuthButton.vue'
+import { vFullHeight } from '../../../fullHeight/directive'
+import {hasAuth} from '@/utils/auth'
+import { t } from '@/lang/index'
 
-import {vFullHeight} from '../../../fullHeight/directive'
+
 //
 const props = defineProps({
   menuFilter: {
@@ -173,12 +188,20 @@ const pageEditorDialogRef = ref()
 //
 async function handleAdd() {
   //
+  const styleDefault = {
+    diaplay: 'block',
+    'min-height': '128px',
+    'background-color': appContext.getCode().colorBackground || '#EBEDF0',
+    'box-sizing': 'border-box',
+    ...appContext.getCode().pageStyle||{}
+  }
+  //
   const ui = [
     {
       key: '_root',
       type: '_container',
       label: 'ROOT',
-      version:'1.0',
+      version: '1.0',
       config: {
         basic: {
           _slot: {
@@ -187,9 +210,7 @@ async function handleAdd() {
         },
         data: {},
         event: [],
-        display: {
-          style: { diaplay: 'block', 'min-height': '128px', 'background-color': appContext.getCode().colorBackground||'#F5F7FA' }
-        } //, margin: '10px'
+        display: {style:styleDefault}
       }
     }
   ]
@@ -203,7 +224,7 @@ async function handleAdd() {
     }
   })
   //Calcuate next sequence
-  const nextSequence = result?.sequenceMax!=undefined ? result.sequenceMax + 1 : 0
+  const nextSequence = result?.sequenceMax != undefined ? result.sequenceMax + 1 : 0
   //
   let dataAdd = {
     app: appContext.getKey(),
@@ -215,8 +236,10 @@ async function handleAdd() {
     methods: [],
     ui: ui,
     renderMode: 'flex',
-    width:1920,
-    height:1080,
+    "settingAbsolute" : {
+        "width" : 1920,
+        "height" : 1080
+    },
   }
   //console.log(JSON.stringify(dataAdd))
   //
@@ -229,6 +252,9 @@ function handleEdit(sp) {
   pageEditorDialogRef.value.show(rowCopied, callback)
 }
 
+function handleRowClick(row) {
+  //emit('pageDesign', row['_id'])
+}
 const callback = (dataNew: Object) => {
   // console.log('CALLBACK:'+JSON.stringify(dataNew))
   //
@@ -239,25 +265,28 @@ const callback = (dataNew: Object) => {
       data: dataNew
     })
     .then(function (response) {
-      if(!dataNew['_id']){
+      if (!dataNew['_id'] && hasAuth('page_edit')) {
+        //User may has no page edit so can not open page design
+        //And if user has page edit absolutely it can edit it since he is the page owner
         //add
-        //Open design 
+        //Open design
         handleDesign(response['_id'])
-      }else{
+      } else {
         //edit
-      load()
-      //
-      ElMessage({
-        message: 'Page info saved',
-        type: 'success'
-      })}
+        load()
+        //
+        ElMessage({
+          message: t('_._.saveSuccess'),
+          type: 'success'
+        })
+      }
     })
 }
 //Delete
 const handleDelete = (sp) => {
-  ElMessageBox.confirm('Will you want to delte this page', 'Warning', {
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
+  ElMessageBox.confirm(t('_.components.appEditor.pageEditor.delPrompt'), t('_._.warning'), {
+    confirmButtonText: t('_._.yes'),
+    cancelButtonText: t('_._.no'),
     type: 'warning'
   }).then(() => {
     //
@@ -274,7 +303,7 @@ const handleDelete = (sp) => {
         load()
         //
         ElMessage({
-          message: 'Page deleted',
+          message: t('_._.delSuccess'),
           type: 'success'
         })
       })
@@ -282,7 +311,7 @@ const handleDelete = (sp) => {
 }
 //Copy
 const handleCopy = (sp) => {
-  ElMessageBox.confirm('Will you want to copy this page', 'Warning', {
+  ElMessageBox.confirm(t('_.components.appEditor.pageEditor.copyPrompt'), t('_._.warning'), {
     confirmButtonText: 'Yes',
     cancelButtonText: 'No',
     type: 'warning'
@@ -301,7 +330,7 @@ const handleCopy = (sp) => {
         load()
         //
         ElMessage({
-          message: 'Page copied',
+          message: t('_._.copySuccess'),
           type: 'success'
         })
       })
@@ -341,7 +370,7 @@ function handleBatchExport() {
       })
       .then(function (response) {
         console.log(response)
-        download(response, 'pages.zip')
+        downloadHttpResponse(response, 'pages.zip')
         //
         // ElMessage.success('Download done!')
       })

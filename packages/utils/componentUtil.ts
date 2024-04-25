@@ -25,8 +25,11 @@ export function buildTreeData(code, componentRepository, callback?) {
     //Create node for each component
     for (const v of components) {
       //Here we found a normal component or root
+
+      const nodeType=(v.type == '_container' ? (v.key=='_root'?'root':'slot') : 'component')
+
       const node = callback(
-        v.type == '_container' ? 'root' : 'component',
+        nodeType,
         { component: v },
         componentRepository
       )
@@ -141,10 +144,11 @@ export function treeCallback(type, info, componentRepository?) {
       nodeType: 'container'
     }
   } else if (type == 'slot') {
+
     return {
-      label: info.key,
+      label: info.key?info.key:info.component.key,
       icon: 'mdiOrderBoolAscendingVariant',
-      key: info.component.key + '.' + info.key,
+      key: info.key?(info.component.key + '.' + info.key):info.component.key,
       data: info.component,
       nodeType: 'slot'
     }

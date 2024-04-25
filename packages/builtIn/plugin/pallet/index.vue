@@ -101,7 +101,7 @@ function cloneComponentPallet(component) {
 
 <template>
   <div>
-    <el-input v-model="filter" placeholder="Input to filter pallet item" style="margin-bottom:8px;"></el-input>
+    <el-input v-model="filter" :placeholder="$t('_.builtIn.plugin.pallet.filter')" style="margin-bottom:8px;"></el-input>
     <el-collapse accordion :model-value="initOpenedFolder">
       <el-collapse-item v-for="folder in folders" :key="folder.key" :name="folder.key">
         <template #title>

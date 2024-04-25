@@ -5,7 +5,7 @@ import pluginManager from './pluginManager'
 import createRequest from '@/utils/requestCreator'
 import useComponentRepository from './componentRepository/index'
 import useFunctionRepository from './functionRepository/index'
-
+import mitt from 'mitt'
 export default function createGlobalContext(baseUrl: string = '', vueApp: App, routerInit: Router) {
   //
   const globalContext = {
@@ -14,7 +14,9 @@ export default function createGlobalContext(baseUrl: string = '', vueApp: App, r
     //vue app
     vueApp: vueApp,
     //Vue router
-    router: routerInit || useRouter()
+    router: routerInit || useRouter(),
+    //
+    mitt: mitt(),
   }
   //
   globalContext.componentRepository = useComponentRepository(globalContext)

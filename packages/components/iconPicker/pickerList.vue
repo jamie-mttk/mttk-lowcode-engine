@@ -2,12 +2,11 @@
   <el-input
     v-model="filter"
     clearable
-    placeholder="You should input something to filter icons ."
   >
     <template #append>
       <el-button-group>
-        <el-button @click="emit('iconChoosed', undefined)">Clear</el-button>
-        <el-button @click="emit('closePopover')">Cose</el-button>
+        <el-button @click="emit('iconChoosed', undefined)">{{ $t('_._.clear') }}</el-button>
+        <el-button @click="emit('closePopover')">{{ $t('_._.close') }}</el-button>
       </el-button-group>
     </template>
   </el-input>

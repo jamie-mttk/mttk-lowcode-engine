@@ -4,6 +4,7 @@
 		:disabled="!props.tooltip"
         :raw-content="true"
         :content="props.tooltip"
+        :show-after="1000"
         placement="bottom"
       >
     <i class="lc-icon" :style="styleObject" aria-hidden="true"  v-bind="$attrs" @click="handleClick">

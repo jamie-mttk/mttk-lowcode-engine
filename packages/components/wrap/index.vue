@@ -8,6 +8,7 @@ import { deepCopy, } from '@/utils/tools'
 import { tryEval } from '@/utils/expression'
 import { tryConvertDataType } from '@/utils/dataTransform'
 import lcPanel from '@/components/panel/index.vue'
+import {t} from '@/lang/index'
 //
 const props = defineProps({
   modelValue: {
@@ -40,7 +41,7 @@ const componentConfig = computed(() => {
       return c
     } else {
       // console.log('error load '+props.modelValue.type)
-      ElMessage.error("No component is found from :" + JSON.stringify(props.modelValue))
+      ElMessage.error(t('_.components.wrap.errorNoComponent',[JSON.stringify(props.modelValue)]))
       return {}
     }
   } else {
@@ -78,7 +79,7 @@ function myDataGet(contextWrap) {
         ElMessage({
           type: 'error',
           dangerouslyUseHTMLString: true,
-          message: 'The data content of ' + props.modelValue.key + ' can not be translate into required data type:' + dataType + ',error:' + e,
+          message: t('_.components.wrap.errorDataType',[ props.modelValue.key,dataType,e])
         })
         console.log(e)
         return undefined
@@ -117,31 +118,31 @@ function checkDataType(dataType: string, result: any) {
     if (Array.isArray(result)) {
       return undefined;
     }
-    return 'The data of ' + props.modelValue.key + ' requires ' + dataType + ',but the result is not an array'
+    return t('_.components.wrap.errorCheckDataType1',[props.modelValue.key ,dataType])
   } else if (dataType == 'Object') {
     if (typeof result == 'object' && !Array.isArray(result)) {
       return undefined;
     }
     //
-    return 'The data of ' + props.modelValue.key + ' requires ' + dataType + ',but the result is not an object or it is array'
+    return t('_.components.wrap.errorCheckDataType2',[props.modelValue.key ,dataType])
   } else if (dataType == 'String') {
     if (typeof result == 'string') {
       return undefined;
     }
     //
-    return 'The data of ' + props.modelValue.key + ' requires ' + dataType + ',but the result is ' + (typeof result)
+    return t('_.components.wrap.errorCheckDataType3',[props.modelValue.key ,dataType,(typeof result)])
   } else if (dataType == 'Number') {
     if (typeof result == 'number') {
       return undefined;
     }
     //
-    return 'The data of ' + props.modelValue.key + ' requires ' + dataType + ',but the result is ' + (typeof result)
+    return t('_.components.wrap.errorCheckDataType3',[props.modelValue.key ,dataType,(typeof result)])
   } else if (dataType == 'Boolean') {
     if (typeof result == 'boolean') {
       return undefined;
     }
     //
-    return 'The data of ' + props.modelValue.key + ' requires ' + dataType + ',but the result is ' + (typeof result)
+    return t('_.components.wrap.errorCheckDataType3',[props.modelValue.key ,dataType,(typeof result)])
   } else {
     return undefined;
 
@@ -166,14 +167,12 @@ function calProps(propsRaw) {
 
 //Build comp wrap config
 const realConfig =  function (contextWrap) {
-
-
   try {
 
     return  buildRealConfigInternal(contextWrap)
   } catch (e) {
     console.log(e)
-    const error = 'Build component config failed<br>' + e
+    const error = t('_.components.wrap.errorBuild') + e
     ElMessage({
       type: 'error',
       dangerouslyUseHTMLString: true,
@@ -258,13 +257,15 @@ const realConfig =  function (contextWrap) {
     //   result = await transform(paras)
     } else {
       //error
-      throw Error('Unsupported transform , it should be a funciton or promise')
+      throw Error(t('_.components.wrap.errorTransform'))
 
     }
     //
     result=unref(result)
 
   }
+  //
+  // console.log(result)
   //
   // console.log('00001', props.modelValue)
   //Set instance key as component key
@@ -295,7 +296,7 @@ const realConfig =  function (contextWrap) {
         result['@' + event.name] = { type: 'function', value: handleEventMethod(event) }
 
       } else {
-        throw new Error('Unsuported event type:' + event.mode)
+        throw new Error(t('_.components.wrap.errorEvent',[ event.mode]) )
       }
     }
   }
@@ -426,7 +427,7 @@ function componentChoosed(event: any) {
   //   }
   // }
   //
-  // console.log('COMPONENT CHOOSED IS CALLED',props.modelValue)
+  // console.log('COMPONENT CHOOSED IS CALLED',props.modelValue.key)
   context.choosedManager.set(props.modelValue,event.timeStamp)
     //
     emit('componentChoosed')
@@ -434,17 +435,17 @@ function componentChoosed(event: any) {
 }
 
 //Is current component active
-const isActive = computed(() => {
-  const choosed = context.choosedManager.get();
-  // console.log(context)
-  // console.log(context.mode)
-  return (
-    context.mode.value == 'edit' &&
-    choosed &&
-    choosed.key &&
-    choosed.key == props.modelValue?.key
-  );
-})
+// const isActive = computed(() => {
+//   const choosed = context.choosedManager.get();
+//   // console.log(context)
+//   // console.log(context.mode)
+//   return (
+//     context.mode.value == 'edit' &&
+//     choosed &&
+//     choosed.key &&
+//     choosed.key == props.modelValue?.key
+//   );
+// })
 // // //The style of current component
 // const componentStyles = computed(() => {
 //   return props.modelValue.styles || {}

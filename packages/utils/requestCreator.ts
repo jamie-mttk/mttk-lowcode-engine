@@ -1,11 +1,10 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { ElMessage,ElMessageBox  } from 'element-plus'
-import { loginState,reset } from './authentication'
-
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { loginState, reset } from './authentication'
+import { t } from '@/lang/index'
 export default function createRequest(baseUrl: string = '') {
-
   //
   NProgress.configure({ showSpinner: true })
   // create an axios instance
@@ -21,7 +20,7 @@ export default function createRequest(baseUrl: string = '') {
       NProgress.start()
       //Add X-Token
       if (loginState.value.token) {
-         config.headers['X-Token'] = loginState.value.token
+        config.headers['X-Token'] = loginState.value.token
       }
       //
       return config
@@ -52,41 +51,44 @@ export default function createRequest(baseUrl: string = '') {
       NProgress.done()
 
       const response = error.response
+
       if (response.status === 401) {
-        ElMessageBox.confirm(
-          '未登录或登录已过期,可以取消继续留在当前页面，或者重新登录',
-         '确认',
-          {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
-            closeOnClickModal:false,
-            type: 'warning'
-          }
-        ).then(() => {
+        ElMessageBox.confirm(t('_.utils.requestCreator.notLoginPrompt'), t('_._.confirm'), {
+          confirmButtonText: t('_.utils.requestCreator.relogin'),
+          cancelButtonText: t('_._.cancel'),
+          closeOnClickModal: false,
+          type: 'warning'
+        }).then(() => {
           //
-         
-          reset();
+
+          reset()
           //
           location.reload()
         })
-      }else if (response.status === 403) {
-        ElMessageBox.alert('你未授权访问此URL:'+'\n'+response.request.responseURL, '未授权访问')
-      }else{
-      //
-      //console.log(error);
-      //
-      const msg =
-        error.config.method +
-        ' ' +
-        error.config.url +
-        ' return status code:' +
-        (error.response?.status || 'none') +
-        '<br>' +
-        error.message
+      } else if (response.status === 403) {
+  
+        ElMessageBox.alert(
+          t('_.utils.requestCreator.unAUth',[response.request.responseURL]),
+          t('_._.confirm')
+        )
+        //
+        return
+      } else {
+        //
+        //console.log(error);
+        //
+        const msg =
+          error.config.method +
+          ' ' +
+          error.config.url +
+          ':' +
+          (error.response?.status || 'none') +
+          '<br>' +
+          error.message
 
-      //
-      showErrorInfo(msg)
-    }
+        //
+        showErrorInfo(msg)
+      }
       //
       //
       return Promise.reject(error)

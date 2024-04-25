@@ -1,15 +1,15 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="Data value">
+  <el-dialog v-model="dialogVisible" :title="$t('_.builtIn.plugin.dataEditor.dataValueTitle')">
     <b-ace-editor v-model="jsonData" lang="json" width="100%" height="50vh" :readonly="false"
       :font-size="14"></b-ace-editor>
     <template #footer>
       <span class="dialog-footer">
         <el-switch v-if="editingType==0" style="margin-right: 20px;" v-model="resetFlag" size="large"
-          inactive-text="Reset current value to init value while saving" />
+          :inactive-text="$t('_.builtIn.plugin.dataEditor.resetCurrent')" />
           <el-switch v-if="editingType==1" style="margin-right: 20px;" v-model="resetFlag2" size="large"
-          inactive-text="Reset init value to current value while saving" />
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="handleSave">Save</el-button>
+          :inactive-text="$t('_.builtIn.plugin.dataEditor.resetInit')" />
+        <el-button @click="dialogVisible = false">{{ $t('_._.cancel') }}</el-button>
+        <el-button type="primary" @click="handleSave">{{ $t('_._.save') }}</el-button>
       </span>
     </template>
   </el-dialog>

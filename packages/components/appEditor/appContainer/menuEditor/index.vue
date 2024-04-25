@@ -1,14 +1,14 @@
 <template>
   <div class="toolbar-table-container">
     <div class="lc-common-toolbar toolbar" style="background-color: var(--el-color-primary)">
-      <div class="left" style="font-weight: bold; color: var(--el-color-white)">Menus</div>
+      <div class="left" style="font-weight: bold; color: var(--el-color-white)">{{$t('_.components.appEditor.menuEditor.title')}}</div>
 
       <el-button-group class="right">
         <el-button @click="load">
-          <template #icon> <lc-icon icon="mdiRefresh"></lc-icon> </template>Refresh</el-button
+          <template #icon> <lc-icon icon="mdiRefresh"></lc-icon> </template>{{$t('_._.refresh')}}</el-button
         >
         <el-button @click="handleAdd" v-auth:menu_add>
-          <template #icon> <lc-icon icon="mdiPlus"></lc-icon> </template>Add menu</el-button
+          <template #icon> <lc-icon icon="mdiPlus"></lc-icon> </template>{{t('_._.add')}}</el-button
         >
       </el-button-group>
     </div>
@@ -66,6 +66,8 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import MenuEditorDialog from './MenuEditorDialog.vue'
 import DataAuthButton from '@/components/auth/DataAuthButton.vue'
 import {vFullHeight} from '../../../fullHeight/directive'
+import {t} from '@/lang/index'
+
 const emit = defineEmits<{
   (e: 'selectionChanged', type: string): void
 }>()
@@ -100,7 +102,7 @@ function load() {
     .then(function (response) {
       tableData.value = response.list || []
       //Use to display show all pages
-      tableData.value.push({ _id: '', name: 'Show all pages' })
+      tableData.value.push({ _id: '', name: t('_.components.appEditor.menuEditor.showAll') })
     })
 }
 //
@@ -123,7 +125,7 @@ async function handleAdd() {
     }
   })
   //Calcuate next sequence
-  const nextSequence = result?.sequenceMax ? result.sequenceMax + 1 : 0
+  const nextSequence = result?.sequenceMax!=undefined ? result.sequenceMax + 1 : 0
 
   //
   menuEditorDialogRef.value.show({ app: appContext.getKey(), sequence: nextSequence }, callback)
@@ -146,7 +148,7 @@ const callback = (dataNew: Object) => {
       load()
       //
       ElMessage({
-        message: 'Menu saved',
+        message: t('_._.saveSuccess'),
         type: 'success'
       })
     })
@@ -154,11 +156,11 @@ const callback = (dataNew: Object) => {
 //Delete
 const handleDelete = (sp) => {
   ElMessageBox.confirm(
-    'Will you want to delte this menu?All the pages under this menu will be unlinked!',
-    'Warning',
+    t('_.components.appEditor.menuEditor.delPrompt'),
+    t('_._.warning'),
     {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: t('_._.yes'),
+      cancelButtonText: t('_._.no'),
       type: 'warning'
     }
   ).then(() => {
@@ -176,7 +178,7 @@ const handleDelete = (sp) => {
         load()
         //
         ElMessage({
-          message: 'Menu deleted',
+          message:t('_._.delSuccess'),
           type: 'success'
         })
       })

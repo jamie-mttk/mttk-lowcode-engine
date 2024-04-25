@@ -1,59 +1,74 @@
 <template>
-    <el-form-item :prop="props.config['~prop']" style="margin-bottom:0px;">
-        <template #label>
-            <div class="lc-common-toolbar" style="background-color: transparent;line-height:22px;">
-                <div>
-                    {{ config['~label'] }}
+  <el-form-item :prop="props.config['~prop']" style="margin-bottom: 4px" class="prop-form-item">
+    <template #label>
+      <div
+        class="lc-common-toolbar"
+        style="background-color: transparent; line-height: 22px; padding: 0px"
+      >
+        <div>
+          {{ config['~label'] }}
 
-                    <lc-icon icon="mdiHelpCircleOutline" :tooltip="config['~description']"
-                        v-if="config['~description']"></lc-icon>
-                </div>
-                <div v-show="showSwitchButton">
-                    <lc-icon icon="mdiExponent" tooltip="Expression"  color="#A8ABB2" v-if="inputMode == 'exp'" 
-                        @click="inputMode = 'raw'"></lc-icon>
-                    <lc-icon icon="mdiFormSelect" tooltip="Raw componnet" color="#A8ABB2" v-if="inputMode == 'raw'"
-                        @click="inputMode = 'exp'"></lc-icon>
-                </div>
-            </div>
-        </template>
-        <!-- <el-select v-model="formData.name"  v-if="inputMode == 'raw'">
+          <lc-icon
+            icon="mdiHelpCircleOutline"
+            :tooltip="config['~description']"
+            v-if="config['~description']"
+          ></lc-icon>
+        </div>
+        <div v-show="showSwitchButton">
+          <lc-icon
+            icon="mdiExponent"
+            tooltip="Expression"
+            color="#A8ABB2"
+            v-if="inputMode == 'exp'"
+            @click="inputMode = 'raw'"
+          ></lc-icon>
+          <lc-icon
+            icon="mdiFormSelect"
+            tooltip="Raw componnet"
+            color="#A8ABB2"
+            v-if="inputMode == 'raw'"
+            @click="inputMode = 'exp'"
+          ></lc-icon>
+        </div>
+      </div>
+    </template>
+    <!-- <el-select v-model="formData.name"  v-if="inputMode == 'raw'">
 					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"
 						:disabled="item.disabled" />
 				</el-select> -->
-        <!-- <el-switch v-model="formData.name"  v-if="inputMode == 'raw'"></el-switch> -->
+    <!-- <el-switch v-model="formData.name"  v-if="inputMode == 'raw'"></el-switch> -->
 
-        <MttkWrapComp :config="compConfig" v-if="inputMode == 'raw'"></MttkWrapComp>
-       
-        <lcMyInput v-model="formItemData" v-if="inputMode == 'exp'"></lcMyInput>
-    </el-form-item>
+    <MttkWrapComp :config="compConfig" v-if="inputMode == 'raw'"></MttkWrapComp>
+
+    <lcMyInput v-model="formItemData" v-if="inputMode == 'exp'"></lcMyInput>
+  </el-form-item>
 </template>
 <script lang="ts" setup>
-import { ref, computed,  } from 'vue'
+import { ref, computed } from 'vue'
 import lcMyInput from './MyInput.vue'
 import { buildConfig, stdComponent } from './FormItemUtil'
 import { isExp } from '@/utils/expression'
 
 //
 const props = defineProps({
-    modelValue: {
-        type: Object,
-        required: true,
-        default() {
-            return {}
-        }
-    },
-    config: {
-        type: Object,
-        required: true,
-        default() {
-            return {}
-        }
-    },
-    context: {
-        type: Object,
-        required: true,
-
-    },
+  modelValue: {
+    type: Object,
+    required: true,
+    default() {
+      return {}
+    }
+  },
+  config: {
+    type: Object,
+    required: true,
+    default() {
+      return {}
+    }
+  },
+  context: {
+    type: Object,
+    required: true
+  }
 })
 
 // //
@@ -65,16 +80,18 @@ const props = defineProps({
 //     console.log('onUnmounted<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'+props.config['~label'])
 // })
 const emit = defineEmits<{
-    (e: 'update:modelValue', data: Object): void
+  (e: 'update:modelValue', data: Object): void
 }>()
 //
 const formItemData = computed({
-    get: () => { return props.modelValue[props.config['~prop']] },
-    set: (val) => {
-        const formData = props.modelValue
-        formData[props.config['~prop']] = val
-        emit('update:modelValue', formData)
-    }
+  get: () => {
+    return props.modelValue[props.config['~prop']]
+  },
+  set: (val) => {
+    const formData = props.modelValue
+    formData[props.config['~prop']] = val
+    emit('update:modelValue', formData)
+  }
 })
 //value can be raw(Raw component to input),exp(Expression mode)
 const inputMode = ref(initInputMode())
@@ -90,29 +107,38 @@ const inputMode = ref(initInputMode())
 //     console.log('trigger',e)
 //   }})
 //
-
-const compConfig = buildConfig(props.modelValue, props.config, props.context)
+//Use computed so the change will refresh the form
+//For example, user create a data will immeidately shown in data select option
+const compConfig = computed(() => buildConfig(props.modelValue, props.config, props.context))
 //Whether to show switch button
 const showSwitchButton = computed(() => {
-    const compName = stdComponent(props.config['~component'])
-    if (compName == 'elinput') {
-        //input does not need JS
-        return false;
-    }
-    if (props.config['~hideSwitchButton']) {
-        return false
-    }
-    //
-    return true
+  const compName = stdComponent(props.config['~component'])
+  if (compName == 'elinput') {
+    //input does not need JS
+    return false
+  }
+  if (props.config['~hideSwitchButton']) {
+    return false
+  }
+  //
+  return true
 })
 //calculate the init inputMode
 function initInputMode() {
-    const formData = formItemData.value
+  const formData = formItemData.value
 
-    if (isExp(formData)) {
-        return 'exp'
-    }
-    //
-    return 'raw';
+  if (isExp(formData)) {
+    return 'exp'
+  }
+  //
+  return 'raw'
 }
 </script>
+
+<style lang="scss">
+ .prop-form-item .el-form-item__label {
+  margin-top: 8px !important;
+  margin-bottom:2px !important;
+   
+}
+</style>

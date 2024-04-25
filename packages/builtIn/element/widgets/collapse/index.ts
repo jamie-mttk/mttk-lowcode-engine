@@ -1,10 +1,11 @@
 import { collapseTransform } from './transform'
 import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil'
+import {t} from '@/lang/index'
 //
 const collapseConfig = {
   key: '_collapse',
-  name: 'Collapse',
-  description: 'Basic collapse',
+  name: t('_.builtIn.element.collapse.name'),
+  description: '',
   icon: 'mdiArrowCollapseVertical',
   sequence: 23,
   transform: collapseTransform,
@@ -20,7 +21,7 @@ const collapseConfig = {
         // },
         {
           '~component': 'lc-editable-list',
-          '~label': 'Items',
+          '~label': t('_.builtIn.element.collapse.items'),
           '~prop': '_container',
           labelColumn: 'title',
           editConfig: [uiUtil.createInput('title'), uiUtil.createSwitch('disabled')]

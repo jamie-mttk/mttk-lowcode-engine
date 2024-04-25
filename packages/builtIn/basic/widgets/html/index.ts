@@ -1,10 +1,12 @@
 import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil'
+import {t} from '@/lang/index'
 //button config
 const htmlConfig = {
   key: '_html',
-  name: 'HTML',
-  description: 'HTML',
+  name: t('_.builtIn.basic.html.name'),
+  description: t('_.builtIn.basic.html.description'),
   icon: 'mdiLanguageHtml5',
+  sequence: 1,
   transform: function ({ config }) {
     return {
       '~': config.wrapBy || 'div',
@@ -18,16 +20,16 @@ const htmlConfig = {
         html: 'HTML  here'
       },
       ui: [
-        uiUtil.createSelect('wrapBy', ['div', 'span'],'Wrap by'),
-        uiUtil.createInput('html', 'HTML', {
-          '~description': 'Input HTML fragment here to render directly',
+        uiUtil.createSelect('wrapBy', ['div', 'span'],t('_.builtIn.basic.html.wrapBy')),
+        uiUtil.createInput('html',t('_.builtIn.basic.html.html'), {
+          '~description': t('_.builtIn.basic.html.html_description'),
           type: 'textarea',
           rows: 6
         })
 
       ]
     },
-    doisplay: {
+    display: {
       init: {
         style: {
           'min-height': '10px',

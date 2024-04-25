@@ -1,11 +1,7 @@
-export const dataAuthType={
-    'ownerGroup':'所有者组',
-    'group':'用户组',
-    user:'用户'
-}
+import {t} from '@/lang/index'
 
 export const dataAuthTypes=[
-    {value:'ownerGroup',name:'所有者组'},
-    {value:'group',name:'用户组'},
-    {value:'user',name:'用户'}
+    {value:'ownerGroup',name:t('_.components.auth.dataAuthType.ownerGroup')},
+    {value:'group',name:t('_.components.auth.dataAuthType.group')},
+    {value:'user',name:t('_.components.auth.dataAuthType.user')},
 ]

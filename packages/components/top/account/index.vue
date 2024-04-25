@@ -2,19 +2,19 @@
   <div class="auth-container">
     <div class="lc-common-toolbar toolbar">
       <div class="left" style="font-weight: bold">
-        <lc-icon icon="mdiAccount" style="margin-right: 4px" size="large" />用户管理
+        <lc-icon icon="mdiAccount" style="margin-right: 4px" size="large" />{{ $t('_.components.top.account.title') }}
       </div>
-      <el-input v-model="filter" placeholder="Input to filter" class="middle" clearable></el-input>
+      <el-input v-model="filter" :placeholder="$t('_._.filterPrompt')" class="middle" clearable></el-input>
 
       <el-button-group class="right">
         <el-button @click="load">
           <template #icon>
             <lc-icon icon="mdiRefresh"></lc-icon>
           </template>
-          刷新</el-button
+          {{ $t('_._.refresh') }}</el-button
         >
         <el-button @click="handleAdd" v-auth:account_add>
-          <template #icon> <lc-icon icon="mdiPlus"></lc-icon> </template>增加</el-button
+          <template #icon> <lc-icon icon="mdiPlus"></lc-icon> </template>{{ $t('_._.add') }}</el-button
         >
       </el-button-group>
     </div>
@@ -25,29 +25,36 @@
       class="table-area"
       ref="editorTableRef"
     >
-      <el-table-column prop="name" label="名称" sortable width="320"></el-table-column>
-      <el-table-column prop="username" label="用户名" sortable width="320"></el-table-column>
-      <el-table-column prop="description" label="描述" sortable />
+      <el-table-column prop="name" :label=" $t('_._.name') " sortable width="240"></el-table-column>
+      <el-table-column prop="username" :label="$t('_.components.top.account.username')" sortable width="240"></el-table-column>
+      <el-table-column prop="active" :label="$t('_.components.top.account.active')" sortable width="120">
+        <template #default="sp">
+          <el-switch v-model="sp.row['active']" :before-change="()=>{return false}"/>
 
-      <el-table-column prop="_updateTime" label="最后更新" sortable width="240">
+        </template>
+      </el-table-column>
+      <el-table-column prop="description" :label=" $t('_._.description') " sortable />
+
+      <el-table-column prop="_updateTime" :label=" $t('_._.updateTime') " sortable width="240">
         <template #default="sp">
           {{ formatMongoDate(sp.row['_updateTime']) }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="320">
+      <el-table-column :label=" $t('_._.operation') " width="420">
         <template #default="sp">
           <el-button-group>
-            <el-button @click="handleEdit(sp)" v-data-auth:edit="sp.row">编辑</el-button>
-            <el-button @click="handleDelete(sp)" v-data-auth:del="sp.row">删除</el-button>
-            <el-button @click="handleCopy(sp)" v-auth:account_add>拷贝</el-button>
-            <el-button @click="changePassword(sp)" v-auth:account_add>修改密码</el-button>
+            <el-button @click="handleEdit(sp)" v-data-auth:edit="sp.row"> {{ $t('_._.edit')  }}</el-button>
+            <el-button @click="handleDelete(sp)" v-data-auth:del="sp.row">{{ $t('_._.del') }}</el-button>
+            <el-button @click="handleCopy(sp)" v-auth:account_add>{{ $t('_._.copy') }}</el-button>
+            <el-button @click="changePassword(sp)" v-data-auth:edit="sp.row">{{ $t('_.components.top.account.resetPassword') }}</el-button>
+            <DataAuthButton :data="sp.row" resource="account" />
           </el-button-group>
         </template>
       </el-table-column>
     </el-table>
   </div>
   <AccountEditorDialog ref="editorDialogRef"></AccountEditorDialog>
-  <ChangePasswordDialog ref="changePasswordDialogRef"></ChangePasswordDialog>
+  <ResetPasswordDialog ref="passwordDialogRef"></ResetPasswordDialog>
 </template>
 
 <script setup lang="ts">
@@ -56,8 +63,10 @@ import { deepCopy } from '@/utils/tools'
 import { ref, computed, nextTick, onMounted, inject } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import AccountEditorDialog from './AccountEditorDialog.vue'
-import ChangePasswordDialog from './ChangePasswordDialog.vue'
+import ResetPasswordDialog from './ResetPasswordDialog.vue'
 import { formatMongoDate } from '@/utils/tools'
+import DataAuthButton from '@/components/auth/DataAuthButton.vue'
+import {t} from '@/lang/index'
 
 const globalContext = inject('globalContext')
 
@@ -139,16 +148,16 @@ const callback = (dataNew: Object) => {
       load()
       //
       ElMessage({
-        message: '用户保存成功',
-        type: '成功'
+        message: t('_._.saveSuccess'),
+        type: 'success'
       })
     })
 }
 //Delete
 const handleDelete = (sp) => {
-  ElMessageBox.confirm('确定删除此用户吗', '警告', {
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
+  ElMessageBox.confirm(t('_._.delPrompt'), t('_._.confirm'), {
+    confirmButtonText: t('_._.yes'),
+    cancelButtonText: t('_._.no'),
     type: 'warning'
   }).then(() => {
     //
@@ -165,17 +174,17 @@ const handleDelete = (sp) => {
         load()
         //
         ElMessage({
-          message: '删除成功',
-          type: '成功'
+          message: t('_._.delSuccess'),
+          type: 'success'
         })
       })
   })
 }
 //Copy
 const handleCopy = (sp) => {
-  ElMessageBox.confirm('确定复制此用户吗', '警告', {
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
+  ElMessageBox.confirm(t('_._.copyPrompt'),t('_._.warning'), {
+    confirmButtonText: t('_._.yes'),
+    cancelButtonText: t('_._.no'),
     type: 'warning'
   }).then(() => {
     //
@@ -192,17 +201,17 @@ const handleCopy = (sp) => {
         load()
         //
         ElMessage({
-          message: '复制成功',
-          type: '成功'
+          message: t('_._.copySuccess'),
+          type: 'success'
         })
       })
   })
 }
 //
-const changePasswordDialogRef = ref()
+const passwordDialogRef = ref()
 //
 function changePassword(sp) {
-  changePasswordDialogRef.value.show(sp.row)
+  passwordDialogRef.value.show(sp.row)
 }
 </script>
 

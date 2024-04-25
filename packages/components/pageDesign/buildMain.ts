@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { findPluginsByEntry } from '@/context/appContext/appContextUtil'
 import PageRender from '../pageRender/index.vue'
 import PropsEditor from './propsEditor/index.vue'
-import { useElementBounding } from '@vueuse/core'
+import {t} from '@/lang/index'
 
 export function buildMain(context) {
   const mainTabActive = ref('ui')
@@ -10,7 +10,7 @@ export function buildMain(context) {
   //add plugins
   const plugins = findPluginsByEntry(context.appContext, 'main')
   if (plugins.length == 0) {
-    return buildUi()
+    return buildUi(false)
   }
 
   //User interface and main plugins
@@ -43,12 +43,12 @@ export function buildMain(context) {
       name: 'ui',
       '#label': [
         { '~': 'lc-icon', icon: 'mdiPencilBoxMultipleOutline', style: { 'margin-right': '4px' } },
-        'User Interface'
+        t('_.components.pageDesign.ui')
       ],
       '#': buildUi()
     }
   }
-  function buildUi() {
+  function buildUi(hasPlugin=true) {
     //Whether propEditor is expand
     const isExpand = ref(true)
     return {
@@ -59,9 +59,8 @@ export function buildMain(context) {
         {
           '~': 'el-main',
           style: computed(()=>{
-           
-            //
-            return { padding:'0px',height:'calc(100vh - 120px)'}
+            //The height is different depends on whether there is plugin installed
+            return { padding:'0px',height:'calc(100vh - '+(hasPlugin?'100px':'50px')+')'}
           }),
           '@mousedown': panelOuterClicked,
           '#': {
@@ -72,7 +71,7 @@ export function buildMain(context) {
         {
           '~': 'el-aside',
           '~show': isExpand,
-          style: { 'flex-basis': '380px', 'margin-left': '10px', 'z-index': 2000, },
+          style: { 'flex-basis': '380px', 'z-index': 2000},
           '#': {
             '~': PropsEditor,
      

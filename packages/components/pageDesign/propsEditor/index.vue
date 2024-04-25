@@ -2,7 +2,7 @@
 import { inject } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import buildCompEditor from './buildCompEditor'
-
+import {t} from '@/lang/index'
 
 
 const emit = defineEmits(['narrow'])
@@ -18,9 +18,9 @@ const { canBeDelete, configTitle, compEditor } = buildCompEditor(context)
 //
 function handleDelete() {
   //
-  ElMessageBox.confirm('Are you sure to delete this component?', 'Confirm', {
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
+  ElMessageBox.confirm(t('_.components.pageDesign.propsEditor.deletePrompt'), t('_._.confirm'), {
+    confirmButtonText: t('_._.yes'),
+    cancelButtonText: t('_._.no'),
     type: 'warning'
   }).then(() => {
     //
@@ -37,9 +37,9 @@ function handleDelete() {
 //
 function handleDuplicate() {
   //
-  ElMessageBox.confirm('Are you sure to duplicate this component?', 'Confirm', {
-    confirmButtonText: 'Yes',
-    cancelButtonText: 'No',
+  ElMessageBox.confirm(t('_.components.pageDesign.propsEditor.duplicatePrompt'),t('_._.confirm'), {
+    confirmButtonText: t('_._.yes'),
+    cancelButtonText: t('_._.no'),
     type: 'warning'
   }).then(() => {
     //
@@ -67,7 +67,7 @@ function handleDuplicate() {
 
 <template>
 
-    <el-card shadow="never" style="min-width: 320px;height:100%;">
+    <el-card shadow="never" style="min-width: 320px;margin-top:4px;margin-left:4px;margin-right:4px;height:calc(100% - 6px);">
       <template #header>
         <div class="card-header">
           <span>
@@ -84,6 +84,7 @@ function handleDuplicate() {
                 </template>
               </el-button>
             </el-button-group>
+       
           </span>
           <el-button size="small" @click="handleNarrow">
             <template #icon>
@@ -100,7 +101,14 @@ function handleDuplicate() {
 
 </template>
 
-<style>
+<style scoped>
+
+:deep(.el-card__header){
+   padding: 12px 20px 12px 12px; 
+}
+:deep(.el-card__body){
+  margin: 0 0 0 4px;
+}
 .card-header {
   display: flex;
   justify-content: space-between;

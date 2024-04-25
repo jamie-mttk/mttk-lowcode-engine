@@ -1,24 +1,21 @@
 <template>
-
-
-
   <el-table :data="tableData" border >
-    <el-table-column  prop="key" label="Key"  />
-    <el-table-column prop="description" label="Description" />
-    <el-table-column prop="type" label="Type" />
-    <el-table-column fixed="right" label="Operations" width="420px">
+    <el-table-column  prop="key" :label="$t('_._.key')"  />
+    <el-table-column prop="description" :label="$t('_._.description')" />
+    <el-table-column prop="type" :label="$t('_.builtIn.plugin.dataEditor.type')" />
+    <el-table-column fixed="right" :label="$t('_._.operation')" width="420px">
       <template #default="sp">
         <el-button-group>
-        <el-button  type="primary" @click="handleAdd()">Add</el-button>
-        <el-button  type="success" @click="handleEdit(sp)">Edit</el-button>
-        <el-button  type="danger" @click="handleDelete(sp)">Delete</el-button>
-        <el-button  type="primary" @click="handleInitValue(sp)">Init value</el-button>
-        <el-button  type="success" @click="handleCurrentValue(sp)">Current value</el-button>
+        <el-button  type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button>
+        <el-button  type="success" @click="handleEdit(sp)">{{ $t('_._.edit') }}</el-button>
+        <el-button  type="danger" @click="handleDelete(sp)">{{ $t('_._.del') }}</el-button>
+        <el-button  type="primary" @click="handleInitValue(sp)">{{ $t('_.builtIn.plugin.dataEditor.initValue') }}</el-button>
+        <el-button  type="success" @click="handleCurrentValue(sp)">{{ $t('_.builtIn.plugin.dataEditor.currentValue') }}</el-button>
         </el-button-group>
       </template>
     </el-table-column>
     <template #empty>
-     Please <el-button  type="primary" @click="handleAdd()">Add</el-button> a new record
+      <el-button  type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button> 
       </template>
   </el-table>
  
@@ -32,9 +29,8 @@ import {ref,computed,inject} from 'vue'
 import { ElMessageBox,ElMessage } from 'element-plus'
 import DataEditorDialog from './DataEditorDialog.vue'
 import DataValueDialog from './DataValueDialog.vue'
-
-
 import {deepCopy} from '@/utils/tools'
+import {t} from '@/lang/index'
 //Refer to the popup dialog
 const dataEditorDialogRef=ref()
 const dataValueDialogRef=ref()
@@ -60,7 +56,8 @@ const callback=(dataNew:Object)=>{
     //check whether key is existed
     for(const single of tableData.value){
       if(single.key==dataNew.key){
-        ElMessage.error('Data key ['+dataNew.key+'] is already existed')
+        
+        ElMessage.error(t('_.builtIn.plugin.dataEditor.errorExist',[dataNew.key]))
         //
         return;
       }
@@ -75,11 +72,11 @@ const callback=(dataNew:Object)=>{
 //Delete
 const handleDelete = (sp) => {
   ElMessageBox.confirm(
-    'Will you want to delte this data',
-    'Warning',
+    t('_.builtIn.plugin.dataEditor.deletePrompt'),
+    t('_._.warning'),
     {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: t('_._.yes'),
+      cancelButtonText: t('_._.no'),
       type: 'warning',
     }
   )

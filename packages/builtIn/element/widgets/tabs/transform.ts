@@ -3,6 +3,7 @@ import * as transformUtil from '@/context/globalContext/componentRepository/util
 export const tabsTransform=transformUtil.buildWidgetFunc('el-tabs',{}, (result, {config}) => {
   //build default
   result['#'] = buildTabs(config)
+
   //
   return  result
 })

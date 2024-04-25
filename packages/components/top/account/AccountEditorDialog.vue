@@ -1,30 +1,30 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="用户编辑" :destroy-on-close="true" :close-on-click-modal="false"
+    <el-dialog v-model="dialogVisible" :title="$t('_.components.top.account.dialogTitle')" :destroy-on-close="true" :close-on-click-modal="false"
         :close-on-press-escape="false">
 
         <el-form ref="dataEditorFormRef" :model="formData" label-width="120px">
 
-            <el-form-item label="名称" prop="name" required>
+            <el-form-item :label="$t('_._.name')" prop="name" required>
                 <el-input v-model="formData.name" />
             </el-form-item>
-            <el-form-item label="描述" prop="description">
+            <el-form-item :label="$t('_._.description')" prop="description">
                 <el-input v-model="formData.description" />
             </el-form-item>
-            <el-form-item label="用户名" prop="username" required>
+            <el-form-item :label="$t('_.components.top.account.username')" prop="username" required>
                 <el-input v-model="formData.username" />
             </el-form-item>
-            <el-form-item label="密码" prop="password" required v-if="!formData._id">
+            <el-form-item :label="$t('_.components.top.account.password')" prop="password" required v-if="!formData._id">
                 <el-input type="password" :show-password="true" v-model="formData.password" />
             </el-form-item>
-            <el-form-item label="激活" prop="active" >
+            <el-form-item :label="$t('_.components.top.account.active')" prop="active" >
                 <el-switch v-model="formData.active" />
             </el-form-item>
-            <el-form-item label="用户组" prop="groups" >
+            <el-form-item :label="$t('_.components.top.account.groups')" prop="groups" >
                 <el-select multiple filterable v-model="formData.groups">
                     <el-option v-for="item in groups" :key="item._id" :label="item.name" :value="item._id" />
                 </el-select>
             </el-form-item>
-            <el-form-item label="角色" prop="roles" >
+            <el-form-item :label="$t('_.components.top.account.roles')" prop="roles" >
                 <el-select multiple filterable v-model="formData.roles">
                     <el-option v-for="item in roles" :key="item._id" :label="item.name" :value="item._id" />
                 </el-select>
@@ -32,9 +32,9 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button @click="dialogVisible = false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    保存
+                    {{ $t('_._.save') }}
                 </el-button>
             </span>
         </template>

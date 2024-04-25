@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { ref, watch, inject, computed } from 'vue'
-
-
 import { ElMessage } from 'element-plus'
 import DeployedNoRouter from './deployedNoRouter.vue'
+import {t} from '@/lang/index'
+
 //
 const globalContext = inject('globalContext')
 
 //
 
-// if(!router){
-//   console.log('router IS UNDEFINED??')
-// }
-// console.log(useRoute())
-// console.log(useRouter())
+
 //
 let pageId = ref('')
 //
@@ -29,7 +25,7 @@ watch(
       //
       if (!appContext) {
         ElMessage({
-          message: 'App is neither provided in URL normal inejct from appContext, launch failed',
+          message: t('_.components.deployed.errorNoContext'),
           type: 'error',
         })
         //
@@ -68,12 +64,15 @@ function qualifydPageId(appIdNew, pageIdNew) {
           continue;
         }
         pageId.value =page['_id']
+        //Push so the layout can display breadcum breadcrumb
+        globalContext.router.push('/deploy/' + appIdNew+ '/'+page['_id'])
+        //
         return
       }     
     }
     //
     ElMessage({
-      message: 'The app has no page, launch failed.app:' + appIdNew + ',page:' + pageIdNew,
+      message: t('_.components.deployed.errorNoPage',[appIdNew,pageIdNew]) ,
       type: 'error',
     })
 

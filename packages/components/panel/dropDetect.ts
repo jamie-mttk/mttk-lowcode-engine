@@ -5,10 +5,11 @@ import { createUniqueString } from '@/utils/tools'
 export default function useDropDetect(context) {
   const dropping = ref('')
   function detecting() {
+    // console.log('detecting...')
      //Thi is to call clearDropPanelDropping if the drap and drop is canceled
      debouncedFn()
 
-    //  console.log('detecting:'+dropping.value)
+      // console.log('detecting:'+dropping.value)
     if (dropping.value) {
       //This means this panel is already has dropping fous
       return
@@ -38,7 +39,8 @@ export default function useDropDetect(context) {
   }
   //Once it is trying to drop into this panel, add a border
   const droppingClass= computed(() => {
-
+    //
+    // console.log('@@@@@@@@#13')
     return  dropping.value ? 'dropping-panel':''
   })
   //

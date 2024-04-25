@@ -44,24 +44,14 @@ function loadPage(pageId) {
       id: pageId
     }
   }).then(function (response) {
-
-    context.codeManager.setCode(response)
-
-   
+    context.codeManager.setCode(response)   
   });
 }
-
-// 
-
-
 
 </script>
 
 <template>
-
-
     <PageRender  :context="context" ></PageRender>
-
 </template>
 
 <style></style>

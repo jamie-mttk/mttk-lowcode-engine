@@ -1,31 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useI18n } from "vue-i18n";
 
-function test(){
-  console.log('200px',parseStyleValue('200px'))
-  console.log('20abc3px',parseStyleValue('20abc3px'))
-  console.log('70%',parseStyleValue('70%'))
-}
-function parseStyleValue(styleText){
-  if(!styleText || typeof styleText!='string' || !styleText.endsWith('px')||styleText.length<=2){
-    return undefined
-  }
+import { reactive, computed ,ref,inject} from "vue";
+import newMessage from './data'
+import {aaa} from './data1'
+import {useGlobalConfig,provideGlobalConfig} from 'element-plus'
+import zhCN from 'element-plus/es/locale/lang/zh-cn' 
+import enUS from 'element-plus/es/locale/lang/en'
+//
+const globalContext=inject('globalContext')
+const I18n = useI18n();
+    let { locale,t,mergeLocaleMessage } = I18n;
+//
+//
+ provideGlobalConfig({locale:zhCN},globalContext.vueApp,true)
+const changeLanguage = () => {
+      locale.value = locale.value == "zhCN" ? "enUS" : "zhCN"; // 切换中英文
+      //
+      provideGlobalConfig({locale:zhCN},globalContext.vueApp,true)
+    };
+function show(){
+  // const m=  i18nLanguage.global.t("headTxt.user.name")
+  // console.log(m)
   //
-  const value=styleText.substring(0,styleText.length-2)
-  // console.log(value,isNUmber(value),parseInt(value))
-  if(!isNUmber(value)){
-    //please note: parseFloat(20abc4 ) will return 20,so we should check whther it is a number first
-    return undefined
-  }
+  console.log('From data1.ts',aaa.value)
+  console.log('second',t("test1"))
   //
-  return parseFloat((value))
+  console.log('test',useGlobalConfig)
 }
-
-function isNUmber(num) {
-	return /^[0-9]+.?[0-9]*$/.test(num);
+function addMessage(){
+  mergeLocaleMessage('zh-CN',newMessage.zhCN)
+  mergeLocaleMessage('en-US',newMessage.enUS)
 }
+const defaultTime = new Date(2000, 1, 1, 12, 0, 0)
+const value2 = ref('2022-12-12 12:13:14')
 </script>
 
 <template>
-  <div><el-button @click="test">TEST</el-button></div>
+<div>
+  First line:{{ $t("_.components.top.title") }}<br>
+  Second line:{{ $t("test1") }}<br>
+  <button @click="show">SHOW</button>  <button @click="addMessage">Add message</button>
+  <button @click="changeLanguage">
+      {{ $t("languageTxt") }}
+    </button>
+</div>
+<el-date-picker
+        v-model="value2"
+        type="datetime" defaultTime
+        format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss"
+        :default-time="defaultTime"
+      />
 </template>

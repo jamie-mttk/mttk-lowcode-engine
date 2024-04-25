@@ -1,13 +1,13 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="Data editor" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog v-model="dialogVisible" :title="$t('_.builtIn.plugin.dataEditor.dialogTitle')" width="30%" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form ref="dataEditorFormRef" :model="formData"  label-width="120px">
-            <el-form-item label="Key"  prop="key" required>
+            <el-form-item :label="$t('_._.key')"  prop="key" required>
                 <el-input v-model="formData.key" />
             </el-form-item>
-            <el-form-item label="Description"  prop="description" >
+            <el-form-item :label="$t('_._.description')"  prop="description" >
                 <el-input v-model="formData.description" />
             </el-form-item>
-            <el-form-item label="Type"  prop="type" required>
+            <el-form-item :label="$t('_.builtIn.plugin.dataEditor.type')"  prop="type" required>
                 <el-select v-model="formData.type" >
                     <el-option  label="String" value="String" />
                     <el-option  label="Number" value="Number" />
@@ -19,9 +19,9 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible=false">Cancel</el-button>
+                <el-button @click="dialogVisible=false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    Save
+                    {{ $t('_._.save') }}
                 </el-button>
             </span>
         </template>

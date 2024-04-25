@@ -1,27 +1,28 @@
 import { ref,  computed, watch,  } from 'vue'
-
+import {t} from '@/lang/index'
 
 
 import {pageProps,promptMsg,buildInternal} from './buildCompEditorUti'
 //build editor for component
 export default function buildCompEditor(context) {
   
+  const choosed=computed(()=>context.choosedManager.get())
 
   //Whether the component can be delte
   const canBeDelete = computed(() => {
     //
-    const choosed = context.choosedManager.get()
-    return choosed && choosed.key && '_root' != choosed.key
+    return choosed.value && choosed.value.key && '_root' != choosed.value.key
   })
+  //
+  const isPageConfig=computed(()=>!choosed.value || !choosed.value.key||'_root' == choosed.value.key)
   //
   const configTitle = computed(() => {
     //
-    const choosed = context.choosedManager.get()
-    if (!choosed || !choosed.key) {
-      return 'Page config'
+    if (isPageConfig.value) {
+      return t('_.components.pageDesign.propsEditor.buildCompEditor.pageConfig')
     }
     //{ "key": "button215", "type": "button", "config": { "props": { "type": "primary" }, "slots": { "default": "Button3" } }, "data": {}, "event": [] }
-    return choosed.key
+    return choosed.value.key
   })
   //tab index to indicate which tab to show
   const tabIndex = ref('')
@@ -39,13 +40,12 @@ export default function buildCompEditor(context) {
 // }
 
   watch(
-    () => context.choosedManager.get(),
+    () => choosed.value,
     () => {
       //
-      const choosed = context.choosedManager.get()
       // console.log('configBasic is calculated',choosed)
       // console.log(JSON.stringify(choosed))
-      if (!choosed || !choosed.key) {
+      if (isPageConfig.value) {
         //
         compEditor.value = pageProps(context)
         return
@@ -53,19 +53,17 @@ export default function buildCompEditor(context) {
       }
 
       //{ "key": "button215", "type": "button", "config": { "props": { "type": "primary" }, "slots": { "default": "Button3" } }, "data": {}, "event": [] }
-      const componentConfig = context.appContext.globalContext.componentRepository.componentByKey(choosed.type)
+      const componentConfig = context.appContext.globalContext.componentRepository.componentByKey(choosed.value.type)
       if (!componentConfig) {
-        compEditor.value = promptMsg('No component config is found by type:' + choosed.type)
+        compEditor.value = promptMsg(t('_.components.pageDesign.propsEditor.buildCompEditor.error1',[choosed.value.type]) )
         return
       }
       if (!componentConfig.editor) {
-        compEditor.value = promptMsg('Component does not define configuration of type:' + choosed.type)
+        compEditor.value = promptMsg(t('_.components.pageDesign.propsEditor.buildCompEditor.error2',[choosed.value.type]) )
         return
       }
       //
-      buildInternal(choosed,context,componentConfig,compEditor,tabIndex)
-      //
-      // console.log('%%%%%%%%',JSON.stringify(configBasic.value))
+      buildInternal(choosed.value,context,componentConfig,compEditor,tabIndex)
     },
     {
       immediate: true

@@ -1,23 +1,23 @@
 <template>
   <div
     class="drag-container"
-    :class="panelClass"
+
     @dragover.prevent.stop="detecting"
-    @mousemove="laryerMouseMove"
-    @mouseup="laryerMouseUp"
     @drop.prevent.stop="handleDropFromPallet"
+    :class="[isEditMode  && !droppingClass?'drag-container-edit': '', droppingClass?droppingClass:''] "
   >
-    <GridRect ></GridRect>
+    <GridRect></GridRect>
     <!-- :style="dragContainerItemStyle(item)" -->
     <lcWrap
       v-for="item in model"
       :key="item.key"
       class="drag-container-item"
       :modelValue="item"
+      :class="{ 'choosed-wrap': isItemChoosed(context, item) }"
       @componentChoosed="handleComponentChoosed"
     >
     </lcWrap>
-    <ChoosedBox  ref="choosedBoxRef"></ChoosedBox>
+    <ChoosedBox ref="choosedBoxRef"  :modelValue="model"></ChoosedBox>
   </div>
 </template>
 <script lang="ts" setup>
@@ -28,43 +28,38 @@ import lcWrap from '../../wrap/index.vue'
 import GridRect from './GridRect.vue'
 import useDropDetect from '../dropDetect'
 import ChoosedBox from './ChoosedBox.vue'
-import {alignToGrid} from './util'
-
+import { alignToGrid } from './util'
+import { isItemChoosed } from '../PanelUtil'
 //
-const model = defineModel({ type: Array,default:[] })
+const model = defineModel({ type: Array, default: [] })
 
 //
 const context = inject('context')
+const isEditMode=computed(()=>context.mode.value == 'edit')
+
 //Refer to choosed box
 const choosedBoxRef = ref()
 //
-function laryerMouseMove() {
-  choosedBoxRef.value.handleMouseMove()
-}
-function laryerMouseUp() {
-  choosedBoxRef.value.trggerDone()
-}
-function handleComponentChoosed(){
+function handleComponentChoosed() {
   choosedBoxRef.value.triggerMove()
 }
 
 //
-const panelClass = computed(() => {
-  const result = []
-  //
-  if (droppingClass.value) {
-    result.push(droppingClass.value)
-  }
-  // if( context.mode.value=='edit'){
-  //     result.push('panel-edit-mode')
-  // }
-  //
-  return result
-})
+// const panelClass = computed(() => {
+//   const result = []
+//   //
+//   if (droppingClass.value) {
+//     result.push(droppingClass.value)
+//   }
+//   // if( context.mode.value=='edit'){
+//   //     result.push('panel-edit-mode')
+//   // }
+//   //
+//   return result
+// })
 
 //
 const { detecting, clearDetect, droppingClass } = useDropDetect(context)
-
 
 //Once user choose component from pallet
 function handleDropFromPallet(event) {
@@ -81,11 +76,12 @@ function handleDropFromPallet(event) {
   }
   //event.offsetX
 
-  if (!component.config?.display) {
-    setByPath(component, 'config.display', {}, true)
-  }
-  setByPath(component, 'config.display.style.left', alignToGrid(event.offsetX,context), true)
-  setByPath(component, 'config.display.style.top', alignToGrid(event.offsetY,context), true)
+  // if (!component.config?.display) {
+  //   setByPath(component, 'config.display', {}, true)
+  // }
+  // console.log(event.offsetX,event.offsetY,component.config.display.style,alignToGrid(event.offsetX, context))
+  setByPath(component, 'config.display.style.left', alignToGrid(event.offsetX, context), true)
+  setByPath(component, 'config.display.style.top', alignToGrid(event.offsetY, context), true)
   // if (!component.config.display.style.width) {
   //   component.config.display.style.width = '100%'
   // }
@@ -122,15 +118,30 @@ function handleDropFromPallet(event) {
   position: relative;
   min-width: 32px;
   min-height: 32px;
+
+  // background-color: red;
   //try to fullfill the whole parent,but it may not work as expected
   width: 100%;
-  // height: 100%;
+  height: 100%;
   //One drap item
   .drag-container-item {
     position: absolute;
     cursor: pointer;
     user-select: none;
-    border: 1px solid transparent;
+    // border: 1px solid transparent;
   }
+
+  //set z-index to 999 once it is choosed!
+  .choosed-wrap {
+    //once choosed,set z-index to 999 so it will display at top
+    z-index: 999;
+  }
+}
+
+.drag-container-edit{
+ // outline: var(--el-fill-color-extra-light) dashed 2px;
+ outline: var(--el-color-white) solid 1px;
+ min-height: 32px;
+
 }
 </style>

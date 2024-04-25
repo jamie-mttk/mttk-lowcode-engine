@@ -12,7 +12,7 @@ export default function choosedManager(context) {
   //Stop the event bubble may cause unexpected issue ,for example the component can not catch mouse down event
   //
   function set(choosedNew, uniqueValue?: string) {
-    //  console.log(uniqueValue,uniqueValueLast,choosedNew)
+      //  console.log(uniqueValue,choosedNew?.key,uniqueValueLast?.key)
     if (uniqueValue && uniqueValueLast && uniqueValueLast == uniqueValue) {
       //If the save event cause multiple chooseevent, only the first event is triggered
       return

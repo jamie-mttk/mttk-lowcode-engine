@@ -2,6 +2,7 @@ import { reactive, isRef, inject, unref,computed } from 'vue'
 
 import { createUniqueString } from '@/utils/tools'
 import lcFormItem from './components/FormItem.vue'
+import {t} from '@/lang/index'
 //Convert raw config to standard form config
 //the context is optional
 export function formTransform(rawConfig, data, context?: object, hideComponent = false) {
@@ -33,7 +34,7 @@ export function formTransform(rawConfig, data, context?: object, hideComponent =
       '~modelValue': data,
       config: {
         '~component': 'el-switch',
-        '~label': 'Hide component',
+        '~label': t('_.components.pageDesign.propsEditor.formTransform.hide'),
         '~prop': '~hideComponent',
       },
       context: context
@@ -114,7 +115,7 @@ function calFormItem(data, itemConfig, context?: object) {
     context: context
     // id:createUniqueString(),
   }
-  // console.log(c)
+  //  console.log(c)
   //
   return c
 }

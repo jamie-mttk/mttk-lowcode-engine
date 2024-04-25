@@ -13,7 +13,8 @@ export default defineConfig({
     }
   },
   server: {
-    port: 2008,
+    host: '0.0.0.0',
+    port: 2008
   },
   // css: {
   //   preprocessorOptions: {
@@ -23,15 +24,50 @@ export default defineConfig({
   //   },
   // },
   build: {
-    outDir: "dist",
+    outDir: 'dist',
+    sourcemap: false,
     lib: {
-      entry: "./packages/index.ts",
-      name: "mttk-lowcode-engine",
-      fileName: "mttk-lowcode-engine",
+      entry: './packages/index.ts',
+      name: 'mttk-lowcode-engine',
+      fileName: 'mttk-lowcode-engine'
     },
-    rollupOptions: { external: ["vue",'vuedraggable'], output: { 
-      globals: { vue: "Vue",vuedraggable:"vuedraggable" },
-      assetFileNames: 'index.css', },
-   },
-  },
+    rollupOptions: {
+      external: [
+        '@mdi/js',
+        '@vueuse/core',
+        'animate.css',
+        'axios',
+        //'bin-editor-next', can not be external
+        'element-plus',
+        'jsplumb',
+        'mitt',
+        'mttk-vue-wrap',
+        'nprogress',
+        'sortablejs',
+        'source-map-explorer',
+        'splitpanes',
+        'vue',
+        'vue-draggable-plus',
+        'vue-i18n',
+        'vue-router'
+      ],
+      output: {
+        globals: {
+          'vue-router': 'vue-router',
+          axios: 'axios',
+          nprogress: 'nprogress',
+          'element-plus': 'element-plus',
+          vue: 'vue',
+          '@vueuse/core': '@vueuse/core',
+          mitt: 'mitt',
+          'mttk-vue-wrap': 'mttk-vue-wrap',
+          'vue-draggable-plus': 'vue-draggable-plus',
+          '@mdi/js': '@mdi/js',
+          sortablejs: 'sortablejs',
+          'vue-i18n': 'vue-i18n'
+        },
+        assetFileNames: 'index.css'
+      }
+    }
+  }
 })

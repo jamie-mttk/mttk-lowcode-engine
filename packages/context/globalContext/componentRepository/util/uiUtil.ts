@@ -30,7 +30,7 @@ export function createSwitch(prop: string, label?: string, other?: object) {
     if(options){
         result['~options']=options
     }
-    result['clearable']=true
+   
     return result
   }
 export function createBase(component:any,prop: string, label?: string, other?: object){
@@ -63,7 +63,9 @@ function smartAddClearable(other){
   if(!other){
     other={}
   }
+  if( other.clearable==undefined){
   other.clearable=true
+  }
   return other
 }
 //

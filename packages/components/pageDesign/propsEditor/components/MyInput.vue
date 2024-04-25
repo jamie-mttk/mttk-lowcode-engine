@@ -3,7 +3,7 @@
   <el-input v-model="inputValue"  v-bind="$attrs" @dblclick="handleDblClick" @blur="handleBlur"></el-input> 
   <el-drawer
     v-model="drawerShow"  direction="rtl" size="30%"
-    title="Edit data in drawer window"
+    :title="$t('_._.edit')"
   >
   <el-input v-model="inputValue"  type="textarea" :rows="20" ></el-input> 
   </el-drawer>

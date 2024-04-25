@@ -1,24 +1,21 @@
 <template>
-
-
-
   <el-table :data="tableData" border >
-    <el-table-column  prop="key" label="Key"  />
-    <el-table-column prop="description" label="Description" />
-    <el-table-column prop="method" label="Method" />
-    <el-table-column prop="url" label="URL" />
-    <el-table-column fixed="right" label="Operations" width="280px">
+    <el-table-column  prop="key" :label="$t('_._.key')"  />
+    <el-table-column prop="description" :label="$t('_._.description')" />
+    <el-table-column prop="method" :label="$t('_.builtIn.plugin.apiEditor.data.method')" />
+    <el-table-column prop="url" :label="$t('_.builtIn.plugin.apiEditor.data.url')" />
+    <el-table-column fixed="right" :label="$t('_._.operation')" width="280px">
       <template #default="sp">
         <el-button-group>
-        <el-button  type="primary" @click="handleAdd()">Add</el-button>
-        <el-button  type="success" @click="handleEdit(sp)">Edit</el-button>
-        <el-button  type="danger" @click="handleDelete(sp)">Delete</el-button>
-        <el-button  type="warning" @click="handleCall(sp)">Call</el-button>
+        <el-button  type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button>
+        <el-button  type="success" @click="handleEdit(sp)">{{ $t('_._.edit') }}</el-button>
+        <el-button  type="danger" @click="handleDelete(sp)">{{ $t('_._.del') }}</el-button>
+        <el-button  type="warning" @click="handleCall(sp)">{{ $t('_.builtIn.plugin.apiEditor.call') }}</el-button>
         </el-button-group>
       </template>
     </el-table-column>
     <template #empty>
-     Please <el-button  type="primary" @click="handleAdd()">Add</el-button> a new record
+     <el-button  type="primary" @click="handleAdd()">{{ $t('_._.add') }}</el-button> 
       </template>
   </el-table>
  
@@ -32,6 +29,7 @@ import { ElMessageBox,ElMessage } from 'element-plus'
 import ApiEditorDialog from './ApiEditorDialog.vue'
 
 import {deepCopy} from '@/utils/tools'
+import {t} from '@/lang/index'
 //Refer to the popup dialog
 const apiEditorDialogRef=ref()
 //
@@ -64,11 +62,11 @@ const callback=(dataNew:Object)=>{
 //Delete
 const handleDelete = (sp) => {
   ElMessageBox.confirm(
-    'Will you want to delete this API',
-    'Warning',
+    t('_.builtIn.plugin.apiEditor.deletePrompt'),
+    t('_._.warning'),
     {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: t('_._.yes'),
+      cancelButtonText: t('_._.no'),
       type: 'warning',
     }
   )
@@ -81,11 +79,11 @@ const handleDelete = (sp) => {
 //Call
 const handleCall = (sp) => {
   ElMessageBox.confirm(
-    'Will you want to call this API',
-    'Warning',
+    t('_.builtIn.plugin.apiEditor.callPrompt'),
+    t('_._.warning'),
     {
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: t('_._.yes'),
+      cancelButtonText: t('_._.no'),
       type: 'warning',
     }
   )

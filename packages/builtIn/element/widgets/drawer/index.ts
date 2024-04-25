@@ -1,15 +1,15 @@
 import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil'
 import {  buildWidgetWithDefaultSlot,buildPanel } from '@/context/globalContext/componentRepository/util/transformUtil'
+import {t} from '@/lang/index'
+
 //drawer config
 const drawerConfig = {
   key: '_drawer',
-  name: 'Drawer',
-  description: 'Drawer',
+  name: t('_.builtIn.element.drawer.name'),
+  description: '',
   icon: 'mdiPauseBoxOutline',
   sequence: 32,
   transform: function ({config,  context}) {
-
-
     if (context.mode.value == 'edit') {
       //edit - use card to simulate
       const result = buildWidgetWithDefaultSlot('el-card',{config})
@@ -20,7 +20,7 @@ const drawerConfig = {
       //Always show
 
       //The attribute name of card tile is header
-      result.header = (result.title || 'No title') + ' [Please note: This drawer is NOT WYSIWYG]'
+      result.header = (result.title || 'No title') + t('_.builtIn.element.drawer.prompt')
       
 
       //Set style so the card can float from CSS flow
@@ -77,16 +77,16 @@ const drawerConfig = {
   editor: {
     basic: {
       ui: [
-        uiUtil.createInput('title'),
-        uiUtil.createInput('size'),
-        uiUtil.createSwitch('modal', 'Show shadowing layer/Modal'),
-        uiUtil.createSwitch('close-on-click-modal', 'Close on click modal'),
-        uiUtil.createSwitch('close-on-press-escape', 'Close on press escape'),
-        uiUtil.createSwitch('show-close', 'Show close'),
-        uiUtil.createSwitch('append-to-body', 'Append to body'),
-        uiUtil.createSwitch('destroy-on-close', 'Destroy on close'),
-        uiUtil.createSwitch('with-header','Show header'),
-        uiUtil.createSelect('direction', ['rtl' , 'ltr' , 'ttb' , 'btt' ]),
+        uiUtil.createInput('title',t('_.builtIn.element.drawer.title')),
+        uiUtil.createInput('size',t('_.builtIn.element.drawer.size')),
+        uiUtil.createSwitch('modal', t('_.builtIn.element.drawer.modal')),
+        uiUtil.createSwitch('close-on-click-modal', t('_.builtIn.element.drawer.closeOnClick')),
+        uiUtil.createSwitch('close-on-press-escape', t('_.builtIn.element.drawer.closeOnEscape')),
+        uiUtil.createSwitch('show-close',  t('_.builtIn.element.drawer.showClose')),
+        uiUtil.createSwitch('append-to-body',  t('_.builtIn.element.drawer.appendToBody')),
+        uiUtil.createSwitch('destroy-on-close',  t('_.builtIn.element.drawer.destroyOnClose')),
+        uiUtil.createSwitch('with-header',t('_.builtIn.element.drawer.withHeader')),
+        uiUtil.createSelect('direction', ['rtl' , 'ltr' , 'ttb' , 'btt' ],t('_.builtIn.element.drawer.direction')),
       ],
       init: {
         title: 'Drawer default title',

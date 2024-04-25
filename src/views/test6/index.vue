@@ -1,48 +1,53 @@
 <template>
-  <div>
-    <!-- <MttkWrapComp :config="config1"></MttkWrapComp> -->
-    <el-button @click="test">TEST</el-button>
+  <el-button @click="test">TEST</el-button>
+  <div class="mb-4">
+    <el-button>Default</el-button>
+    <el-button type="primary">Primary</el-button>
+    <el-button type="success">Success</el-button>
+    <el-button type="info">Info</el-button>
+    <el-button type="warning">Warning</el-button>
+    <el-button type="danger">Danger</el-button>
   </div>
-</template>
-<script lang="ts" setup>
-import { dividerProps } from 'element-plus';
-import { ref, reactive, onMounted, nextTick, createVNode, inject, getCurrentInstance } from 'vue'
-import {dynamicRender} from 'mttk-vue-wrap'
-import { showPopup } from './showPopup'
-const config = { "~": "el-pagination", "hide-on-single-page": false, "layout": "prev, pager, next", "page-size": 12, "total": 30, "current-page": 1 }
-const config1 = { "~": "el-pagination", '~modelValue': 2, '~modelValueName': 'current-page', "hide-on-single-page": false, "layout": "prev, pager, next", "page-size": 12, "total": 30 }
-const config2 = { "~": "el-pagination", "layout": "prev, pager, next", "total": 50 }
-const globalContext = inject('globalContext')
-//
-const instance = getCurrentInstance()
 
-function test() {
-  console.log(globalContext.vueApp._context)
-  const visible=ref(false)
-  let closeCallbackSave=undefined
-  // function close(){
-  //   if(closeCallbackSave){
-  //     closeCallbackSave()
-  //   }
-  // }
-  const content = {'~':'el-dialog','~modelValue':visible,'@close':close,title:'THIS IS DIALOG TITLE','#':'THIS IS CONTENT'}
-  //
-  // showPopup(instance, 'el-dialog', { title: 'This is dialog' }, content)
-   const {remove}=dynamicRender(content,globalContext.vueApp._context,{removeEvent:'close'})
-  // const {remove}=dynamicRender(content,instance?.appContext,{removeEvent:'close'})
-  // closeCallbackSave=remove
-  visible.value=true
+  <div class="mb-4">
+    <el-button plain>Plain</el-button>
+    <el-button type="primary" plain>Primary</el-button>
+    <el-button type="success" plain>Success</el-button>
+    <el-button type="info" plain>Info</el-button>
+    <el-button type="warning" plain>Warning</el-button>
+    <el-button type="danger" plain>Danger</el-button>
+  </div>
+
+  <div class="mb-4">
+    <el-button round>Round</el-button>
+    <el-button type="primary" round>Primary</el-button>
+    <el-button type="success" round>Success</el-button>
+    <el-button type="info" round>Info</el-button>
+    <el-button type="warning" round>Warning</el-button>
+    <el-button type="danger" round>Danger</el-button>
+  </div>
+
+
+</template>
+
+<script lang="ts" setup>
+
+//
+function test(){
+// document.documentElement 是全局变量时
+const el = document.documentElement
+// const el = document.getElementById('xxx')
+
+// 获取 css 变量
+// getComputedStyle(el).getPropertyValue(`--el-color-primary`)
+
+// 设置 css 变量
+el.style.setProperty('--el-color-primary', '#06b0b2')
 
 }
-
-
 </script>
 <style>
-.test11 {
-
-  width: 12em;
-
-}
-
-.test11:hover {}
+  .mb-4{
+    margin-bottom: 1rem;
+  }
 </style>

@@ -1,10 +1,10 @@
 <template>
-    <el-dialog v-model="dialogVisible" :destroy-on-close="true" title="Menu editor" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog v-model="dialogVisible" :destroy-on-close="true" width="35%" :title="$t('_.components.appEditor.menuEditor.menuEditorDialog.title')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form ref="dataEditorFormRef" :model="formData"  label-width="120px">
-            <el-form-item label="Name"  prop="name" required>
+            <el-form-item :label="$t('_._.name')"  prop="name" required>
                 <el-input v-model="formData.name" />
             </el-form-item>
-            <el-form-item label="Description"  prop="description" >
+            <el-form-item :label="$t('_._.description')"  prop="description" >
                 <el-input v-model="formData.description" />
             </el-form-item>
             <!--
@@ -12,18 +12,18 @@
                 <el-switch v-model="formData.visible" />
             </el-form-item>
             -->
-            <el-form-item label="Icon"  prop="icon" >
+            <el-form-item :label="$t('_._.icon')"  prop="icon" >
                 <lc-icon-picker v-model="formData.icon" />
             </el-form-item>
-            <el-form-item label="Sequence"  prop="sequence" >
+            <el-form-item :label="$t('_._.sequence')"  prop="sequence" >
                 <el-input-number v-model="formData.sequence" />
             </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible=false">Cancel</el-button>
+                <el-button @click="dialogVisible=false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    Save
+                    {{ $t('_._.save') }}
                 </el-button>
             </span>
         </template>

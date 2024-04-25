@@ -1,25 +1,24 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="Computed editor" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog v-model="dialogVisible" :title="$t('_.builtIn.plugin.computedEditor.dialogTitle')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form ref="dataEditorFormRef" :model="formData" label-width="120px">
-            <el-form-item label="Key" prop="key" required>
+            <el-form-item :label="$t('_._.key')" prop="key" required>
                 <el-input v-model="formData.key" />
             </el-form-item>
-            <el-form-item label="Description" prop="description">
+            <el-form-item :label="$t('_._.description')" prop="description">
                 <el-input v-model="formData.description" />
             </el-form-item>
             <el-tabs v-model="codeTab" class="demo-tabs">
-                <el-tab-pane label="Get code" name="code">                    
+                <el-tab-pane :label="$t('_.builtIn.plugin.computedEditor.code')" name="code">                    
                     <el-form-item label="" prop="code" required  :label-width="1">
-                        <el-alert type="info" :closable="false" title="Get computed. It has one parameter named 'c' which is page context" />
-                        <b-ace-editor v-model="formData.code" lang="javascript" width="100%" height="40vh" :readonly="false"
+                        <el-alert type="info" :closable="false" :title="$t('_.builtIn.plugin.computedEditor.codePrompt')" />
+                        <b-ace-editor v-model="formData.code" lang="javascript" width="100%" height="30vh" :readonly="false"
                             :font-size="14"></b-ace-editor>
                     </el-form-item>
                 </el-tab-pane>
-                <el-tab-pane label="Set code" name="codeSet">
-                    
+                <el-tab-pane :label="$t('_.builtIn.plugin.computedEditor.codeSet')" name="codeSet">                    
                     <el-form-item label="" prop="codeSet" :label-width="1">
-                        <el-alert type="info"  :closable="false" title="Set computed. It has tow parameter,one is named 'c' which is page context and the other is value which is the new value to set" />
-                        <b-ace-editor v-model="formData.codeSet" lang="javascript" width="100%" height="40vh" :readonly="false"
+                        <el-alert type="info"  :closable="false" :title="$t('_.builtIn.plugin.computedEditor.codeSetPrompt')" />
+                        <b-ace-editor v-model="formData.codeSet" lang="javascript" width="100%" height="30vh" :readonly="false"
                             :font-size="14"></b-ace-editor>
                     </el-form-item>
                 </el-tab-pane>
@@ -28,9 +27,9 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button @click="dialogVisible = false">{{ $t('_._.cancel') }}</el-button>
                 <el-button type="primary" @click="submitForm(dataEditorFormRef)">
-                    Save
+                    {{ $t('_._.save') }}
                 </el-button>
             </span>
         </template>

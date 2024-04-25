@@ -2,17 +2,19 @@
   <div class="login-container">
     <dvi class="login-area">
       <div class="login-form">
-        <h2 class="outline-none">欢迎使用低代码平台</h2>
+        <h2 >{{ $t('_.plugin.login.title') }}
+          <localeChooser style="line-height:32px;margin-left:8px;"></localeChooser>
+        </h2>
         <el-form ref="loginFormRef" :model="loginData" size="large" label-position="top">
-          <el-form-item prop="username" label="用户名"  required>
-            <el-input clearable v-model="loginData.username" placeholder="请输入用户名">
+          <el-form-item prop="username" :label="$t('_.plugin.login.username')"  required>
+            <el-input clearable v-model="loginData.username" :placeholder="$t('_.plugin.login.usernamePlaceholder')">
               <template #prefix>
                 <lc-icon icon="mdiAccount"></lc-icon>
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item prop="password" label="密码" required>
-            <el-input clearable show-password v-model="loginData.password" placeholder="请输入密码">
+          <el-form-item prop="password" :label="$t('_.plugin.login.password')" required>
+            <el-input clearable show-password v-model="loginData.password" :placeholder="$t('_.plugin.login.passwordPlaceholder')">
               <template #prefix>
                 <lc-icon icon="mdiLock"></lc-icon>
               </template>
@@ -20,12 +22,12 @@
           </el-form-item>
           <el-form-item>
             <el-button size="large" type="primary" style="width: 100%" @click="handleLogin"
-              >登录
+              >{{ $t('_.plugin.login.login') }}
             </el-button>
           </el-form-item>
           <el-form-item>
             <span style="color: var(--el-color-error)" v-if="showLoginError"
-              >登录失败,用户名或密码错误</span
+              >{{ $t('_.plugin.login.loginFail') }}</span
             >
           </el-form-item>
         </el-form>
@@ -36,8 +38,8 @@
 
 <script lang="ts" setup>
 import { ref, reactive, inject } from 'vue'
-import { useRouter } from 'vue-router'
-import { loginState } from '@/utils/authentication'
+import { login } from '@/utils/authentication'
+import localeChooser from '@/lang/localeChooser.vue'
 //
 const globalContext = inject('globalContext')
 //
@@ -53,7 +55,7 @@ const loginData = reactive({
 //
 const showLoginError = ref(false)
 //
-const router = useRouter()
+const router =globalContext.router
 //
 function handleLogin() {
     loginFormRef.value.validate((valid,) => {
@@ -63,7 +65,7 @@ function handleLogin() {
             return
         }
         //
-        loginState.login(globalContext, loginData).then( ()=> {
+        login(globalContext, loginData).then( ()=> {
             //forward to redirect from URL or root page
             router.push(globalContext.router.currentRoute.value.query?.redirect||'/')
         }).catch( (error)=> {
@@ -77,6 +79,9 @@ function handleLogin() {
 }
 </script>
 <style type="scss" scoped>
+:deep(.el-input__inner)  {
+  box-shadow: 0 0 0 1000px #fff inset;
+}
 .login-bg {
   position: fixed;
   height: 100%;
@@ -95,13 +100,15 @@ function handleLogin() {
   background-color: var(--el-fill-color-lighter);
   .login-area {
     display: block;
-    width: 30%;
-    height: 50vh;
+    min-width: 30%;
+    width:480px;
+    min-height: 50vh;
+    height:420px;
     margin: auto auto;
     background-color: var(--el-color-white);
     border-radius: 8px;
     .login-form {
-      padding: 60px 60px 0px 60px;
+      padding: 40px 60px 0px 60px;
     }
   }
 }
