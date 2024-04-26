@@ -11,7 +11,7 @@ export default function createRequest(baseUrl: string = '') {
   const request = axios.create({
     baseURL: baseUrl,
     // withCredentials: true, // send cookies when cross-domain requests
-    timeout: 30000
+    timeout: 120000
   })
 
   // request interceptor

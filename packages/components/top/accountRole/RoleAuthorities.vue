@@ -69,7 +69,6 @@ function buildTableData(authorities, roleAuthorities) {
         result.push(authority)
         //
         authority.key = a.key
-        console.log(a.name,t(a.name))
         authority.name = t(a.name)
 
         //

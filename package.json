@@ -1,6 +1,6 @@
 {
   "name": "mttk-lowcode-engine",
-  "version": "0.3.8",
+  "version": "0.4.0",
   "main": "./dist/mttk-lowcode-engine.umd.js",
   "module": "./dist/mttk-lowcode-engine.mjs",
   "exports": {

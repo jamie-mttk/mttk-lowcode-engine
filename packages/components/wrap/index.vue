@@ -56,8 +56,10 @@ function myDataGet(contextWrap) {
     //No data config is set in component configuration, it should not come here,so just return undefined
     return undefined;
   }
+
   //
   const dataType = componentConfig.value.editor?.data.type
+
   //Try to set value is needed    
   if (props.modelValue.config.data) {
     // console.log(JSON.stringify(props.modelValue.config.data))
@@ -67,10 +69,9 @@ function myDataGet(contextWrap) {
       result = context.d.g(props.modelValue.config.data.dataKey, props.modelValue.config.data.dataPath)
 
     } else if (props.modelValue.config.data.mode == 'computed' && props.modelValue.config.data.computedKey) {
-      result = context.c.g(props.modelValue.config.data.computedKey)
+      result = unref(context.c.g(props.modelValue.config.data.computedKey))
     } else if (props.modelValue.config.data.mode == 'method' && props.modelValue.config.data.methodKey) {
-
-      result = context.m.i({ method: props.modelValue.config.data.methodKey }, contextWrap)
+      result = context.m.methodCall({ method: props.modelValue.config.data.methodKey }, contextWrap)
     } else if (props.modelValue.config.data.mode == 'fixed' && props.modelValue.config.data.dataContent) {
 
       try {
@@ -198,7 +199,7 @@ const realConfig =  function (contextWrap) {
       if (props.modelValue.config.data.mode == 'data') {
         context.dataManager.set(props.modelValue.config.data.dataKey, val, props.modelValue.config.data.dataPath)
       } else if (props.modelValue.config.data.mode == 'computed' && props.modelValue.config.data.computedKey) {
-        context.computedManager.set(props.modelValue.config.data.computedKey, val)
+        context.computedManager.get(props.modelValue.config.data.computedKey).value=val
       } else {
         //not come here,do nothing
       }
