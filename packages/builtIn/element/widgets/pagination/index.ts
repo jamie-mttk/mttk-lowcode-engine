@@ -16,7 +16,7 @@ const paginationConfig = {
         uiUtil.createInputNumber('pager-count',t('_.builtIn.element.pagination.pager-count')),
         uiUtil.createSwitch('small',t('_.builtIn.element.pagination.small')),
         uiUtil.createSwitch('background',t('_.builtIn.element.pagination.background')),
-        uiUtil.createInput('page-sizes',t('_.builtIn.element.pagination.page-size')),
+        uiUtil.createInput('page-sizes',t('_.builtIn.element.pagination.page-sizes11')),
         uiUtil.createInput('prev-text',t('_.builtIn.element.pagination.prev-text')),
         // uiUtil.createIconPicker('_prev-icon'),
         uiUtil.createInput('next-text',t('_.builtIn.element.pagination.next-text')),

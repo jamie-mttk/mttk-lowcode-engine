@@ -10,12 +10,14 @@ import { ElMessage } from 'element-plus'
 
 //Store choosed locale to local storage
 const localCurrent = useStorage('mttk-lowcode-engine-lang', navigator.language || 'enUS')
+
 //Init i18n instance
  const i18n = createI18n({
   legacy: false,
   locale: localCurrent.value,
   fallbackLocale: 'enUS',
-  globalInjection: true,
+  missingWarn: false,
+  fallbackWarn: false,
   messages: {
     zhCN: zhCN,
     enUS: enUS
@@ -37,6 +39,7 @@ const localCurrent = useStorage('mttk-lowcode-engine-lang', navigator.language |
 
 
  function changeLocale(localeNew, globalContext,suppressNotify=false) {
+  console.log('Change locale', localCurrent.value , localeNew)
   //Save
   localCurrent.value = localeNew
   //Change i18n

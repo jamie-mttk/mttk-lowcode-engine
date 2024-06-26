@@ -2,7 +2,7 @@
 
   <div>
     <el-container>
-      <el-header :height="32"  style="padding:0px;"><Top @action="handleAction"></Top></el-header>
+      <el-header height="32px"  style="padding:0px;"><Top @action="handleAction"></Top></el-header>
       <el-main style="padding:0px;">
        <component :is="componentThis"></component>
       

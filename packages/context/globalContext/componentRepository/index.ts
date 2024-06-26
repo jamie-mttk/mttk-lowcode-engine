@@ -28,7 +28,18 @@ export default function useComponentRepository(globalContext) {
     })
   }
   //
-  function registFolder(folder: object) {
+  async function registFolder(folder: object) {
+    if (folder instanceof Promise) {
+      const data = await folder
+      const folderReal = data.default
+      registFolderInternal(folderReal)
+      return folderReal
+    } else {
+      registFolderInternal(folder)
+      return folder
+    }
+  }
+  function registFolderInternal(folder?: object) {
     folders.push(folder)
   }
   //
@@ -43,7 +54,6 @@ export default function useComponentRepository(globalContext) {
     if (component instanceof Promise) {
       const data = await component
       registerComponentInternal(data.default, folder)
-      
     } else {
       registerComponentInternal(component, folder)
     }
@@ -60,12 +70,12 @@ export default function useComponentRepository(globalContext) {
   }
   //Regist folder and components array(set the folder to the given folder)
   async function registerComponents(folder: object, componentConfigs: Array<object>) {
-    registFolder(folder)
+    const folderReal = await registFolder(folder)
 
     //
     for (const componentConfig of componentConfigs) {
       //
-      await registComponent(componentConfig, folder)
+      await registComponent(componentConfig, folderReal)
     }
   }
 

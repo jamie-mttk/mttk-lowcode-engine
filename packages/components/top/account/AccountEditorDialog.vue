@@ -29,6 +29,12 @@
                     <el-option v-for="item in roles" :key="item._id" :label="item.name" :value="item._id" />
                 </el-select>
             </el-form-item>
+            <el-form-item :label="$t('_.components.top.account.email')" prop="username" >
+                <el-input v-model="formData.email" />
+            </el-form-item>
+            <el-form-item :label="$t('_.components.top.account.tel')" prop="username" >
+                <el-input v-model="formData.tel" />
+            </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">

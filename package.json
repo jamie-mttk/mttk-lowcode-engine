@@ -1,6 +1,6 @@
 {
   "name": "mttk-lowcode-engine",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "main": "./dist/mttk-lowcode-engine.umd.js",
   "module": "./dist/mttk-lowcode-engine.mjs",
   "exports": {
@@ -38,13 +38,12 @@
   "dependencies": {
     "@mdi/js": "^7.2.96",
     "@vueuse/core": "^10.1.0",
-    "animate.css": "^4.1.1",
     "axios": "^0.21.4",
     "bin-editor-next": "^1.1.0",
     "element-plus": "^2.4.3",
     "jsplumb": "^2.15.6",
     "mitt": "^3.0.0",
-    "mttk-vue-wrap": "^0.2.5",
+    "mttk-vue-wrap": "^0.2.8",
     "nprogress": "^0.2.0",
     "sortablejs": "^1.15.0",
     "source-map-explorer": "^2.5.3",

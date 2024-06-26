@@ -33,6 +33,13 @@ export function createSwitch(prop: string, label?: string, other?: object) {
    
     return result
   }
+  export function createCollapse(options={},children){
+    {return {
+      '~component': 'el-collapse',
+      ...options,
+      _children: children}
+
+  }}
 export function createBase(component:any,prop: string, label?: string, other?: object){
     checkProp(prop)
     //

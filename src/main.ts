@@ -6,7 +6,7 @@ import router from './router'
 //
 //  import {install} from 'mttk-lowcode-engine'
  import * as install from '@/install/index'
-import 'mttk-lowcode-engine/dist/index.css'
+// import 'mttk-lowcode-engine/dist/index.css'
 
 //
 const app = createApp(App)

@@ -120,16 +120,16 @@ watch(isFullscreen, (value) => {
   height: 100%;
 }
 
-.page_enter {
-  //animation-delay: 10s;
-  animation: zoomInUp;
-  animation-duration: 0.5s;
-}
+// .page_enter {
+//   //animation-delay: 10s;
+//   animation: zoomInUp;
+//   animation-duration: 0.5s;
+// }
 
-.page_leave {
-  animation: zoomOutDown;
-  animation-duration: 0.2s;
-}
+// .page_leave {
+//   animation: zoomOutDown;
+//   animation-duration: 0.2s;
+// }
 
 //Remove the tabs top line below
 .page-designer-main {

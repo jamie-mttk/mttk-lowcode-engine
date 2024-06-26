@@ -208,7 +208,7 @@ export default {
         }
       },
       top: {
-        title: 'Welcome to MTTK low code engine',
+        title: 'MTTK low code engine',
         setting: 'Setting',
         menu: {
           account: 'Account',
@@ -219,6 +219,7 @@ export default {
           _logout: 'Logout'
         },
         account:{
+          name:'Account',
           title:'Account mangement',
           changePassword:'Password',
           resetPassword:'Password',
@@ -227,7 +228,9 @@ export default {
           password:'Password',
           active:'Active',
           groups:'Account groups',
-          roles:'Roles',         
+          roles:'Roles',   
+          email:'Email',
+          tel:'Telephone',      
           cpDialog:{
             title:'Change password',
             passwordOld:'Old password',
@@ -369,7 +372,7 @@ export default {
         }
       },
       basic: {
-        folerName: 'Basic',
+        folerName: 'Basic components',
         html: {
           name: 'HTML',
           description: 'HTML',
@@ -391,6 +394,7 @@ export default {
         }
       },
       element: {
+        folerName: 'Element Plus components',
         button: {
           name: 'Button',
           label: 'Label',

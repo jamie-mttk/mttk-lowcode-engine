@@ -15,7 +15,7 @@
           border-bottom: 1px solid var(--el-border-color);overflow: hidden;white-space: nowrap; "
         :style="'padding: 12px 0 12px '+(isMobile().value?'8px':'16px')"
       >
-        <lc-icon
+        <lc-icon 
           size="medium"
           :icon="appContext.getCode().icon"
           style="margin-right: 16px"
@@ -27,7 +27,7 @@
           <template #title>
             <lc-icon
               :icon="menu.icon || 'mdiMenu'"
-              size="small"
+              size="medium"
               style="margin-right: 8px;"
               :style="'margin-left:'+(isMobile().value?'10px':'20px')"
             ></lc-icon>
@@ -65,27 +65,27 @@
         <div style="display: flex; align-items: center; justify-content: space-between">
           <div style="display: flex; align-items: center; justify-content: space-between">
             <!--Expand/collapse button-->
-            <lc-icon
+            <lc-icon v-if="!isMobile().value"
               :icon="expandFlag ? 'mdiMenuOpen' : 'mdiMenuClose'"
               size="large"
-              style="cursor: pointer;"
+              style="cursor: pointer;margin-right:16px;"
               @click="expandFlag = !expandFlag"
 
             ></lc-icon>
-            <el-breadcrumb separator=">" style="margin-left: 25px"> 
+            <el-breadcrumb separator=">"> 
               <el-breadcrumb-item v-for="item in breadcrumbDate" :key="item.id">{{item}}</el-breadcrumb-item>
             </el-breadcrumb>
           </div>
-          <div>
+          <div style="flex-basis:96px">
             <localeChooser style="line-height:28px;margin-right:4px;"></localeChooser>
-            <lc-icon icon="mdi-fullscreen" :tooltip="$t('_.components.layout.fullScreen')"  size="large"  style="margin-right:32px;" @click="handleFullScreen" ></lc-icon>
+            <lc-icon icon="mdi-fullscreen" :tooltip="$t('_.components.layout.fullScreen')"  size="large"   @click="handleFullScreen" ></lc-icon>
 
           </div>
         </div>
       </el-header>
-
+      <!-- max-height: calc(100vh - 48px); -->
       <el-main ref="elMainRef" id="lcViewMainArea"
-        style="max-height: calc(100vh - 48px); margin: 0px; "
+        style=" margin: 0px;padding:0px; "
         :style="elMainStyle"
       >
         <router-view v-slot="{ Component }">

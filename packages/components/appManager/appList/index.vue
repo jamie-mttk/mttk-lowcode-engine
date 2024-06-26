@@ -3,9 +3,9 @@
     <el-col :md="6" :sm="24" :xs="24" v-for="app in apps" :key="app['_id']">
       <AppSingle :modelValue="app" @action="handleAction"></AppSingle>
     </el-col>
-    <el-col :md="6" :sm="24" :xs="24" v-auth:app_add>
+    <el-col :md="6" :sm="24" :xs="24" v-auth:app_add v-if="!isMobile().value">
       <el-row style="padding: 12px">
-        <el-col
+        <el-col 
           :span="24"
           style="
             height: 160px;
@@ -17,7 +17,7 @@
             justify-content: center;
           "
         >
-          <el-button type="success" link @click="handleAdd">
+          <el-button type="success" link @click="handleAdd" > 
             <lc-icon icon="mdiPlus" size="x-large"></lc-icon>
             <h3>{{ $t('_.components.appManager.add') }}</h3>
           </el-button>
@@ -37,6 +37,7 @@ import AppSingle from './Single.vue'
 import AppDialog from './AppDialog.vue'
 import { deepCopy } from '@/utils/tools'
 import { t } from '@/lang/index'
+import { isMobile } from '../../../utils/tools'
 const emit = defineEmits<{
   (e: 'action', type: string, app: object): void
 }>()

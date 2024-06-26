@@ -5,7 +5,7 @@
   >
     <div class="left" style="font-weight: bold; color: var(--el-color-white);margin-left:16px;">{{$t('_.components.top.title')}}</div>
 
-    <div class="right" style="width: 240px">
+    <div class="right" style="">
      <localeChooser style="color: var(--el-color-white);margin-right:4px;"></localeChooser>
       <el-dropdown  @command="handleCommand">
         <span class="el-dropdown-link" style="color: var(--el-color-white)">
@@ -15,29 +15,30 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="account" v-if="hasAuth('account')"
+            <el-dropdown-item command="account" v-if="hasAuth('account') && !isMobile().value"
               ><lc-icon icon="mdiAccount" style="margin-right: 4px" />{{$t('_.components.top.menu.account')}}</el-dropdown-item
             >
-            <el-dropdown-item command="accountRole" v-if="hasAuth('accountRole')">
+            <el-dropdown-item command="accountRole" v-if="hasAuth('accountRole')  && !isMobile().value">
               <lc-icon
                 icon="mdiShieldAccount"
                 style="margin-right: 4px"
               />{{$t('_.components.top.menu.accountRole')}}</el-dropdown-item
             >
-            <el-dropdown-item command="accountGroup" v-if="hasAuth('accountGroup')"
+            <el-dropdown-item command="accountGroup" v-if="hasAuth('accountGroup')  && !isMobile().value"
               ><lc-icon
                 icon="mdiAccountSupervisor"
                 style="margin-right: 4px"
               />{{$t('_.components.top.menu.accountGroup')}}</el-dropdown-item
             >
-            <el-dropdown-item divided command="app"
+            <el-dropdown-item  command="app" :divided="!isMobile().value"
               ><lc-icon
                 icon="mdiApps"
                 style="margin-right: 4px"
+                
               />{{$t('_.components.top.menu.app')}}</el-dropdown-item
             >
             <!-- <el-dropdown-item>Batch data auth</el-dropdown-item> -->
-            <el-dropdown-item divided command="changePassword"
+            <el-dropdown-item  command="changePassword" 
               ><lc-icon
                 icon="mdiExitToApp"
                 style="margin-right: 4px"
@@ -66,6 +67,7 @@ import AppManager from '../appManager/index.vue'
 import ChangePassword from './changePassword/index.vue'
 import localeChooser from '@/lang/localeChooser.vue'
 import { logout } from '@/utils/authentication'
+import {isMobile} from '@/utils/tools'
 
 import { inject } from 'vue'
 import { hasAuth } from '@/utils/auth'

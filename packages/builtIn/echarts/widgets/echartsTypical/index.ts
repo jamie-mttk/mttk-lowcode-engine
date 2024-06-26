@@ -1,3 +1,4 @@
+import * as uiUtil from '@/context/globalContext/componentRepository/util/uiUtil'
 import { echartsTransform } from './transform'
 import { computed, unref } from 'vue'
 //
@@ -17,10 +18,9 @@ import { computed, unref } from 'vue'
       ui: function ({config}) {
         return [
           //Basic
-          {
-            '~component': 'el-collapse',
-            '~label': 'Basic config',
-            _children: [
+            uiUtil.createCollapse(
+            { '~label': 'Basic config11'},
+             [
               // {
               //   '~component': 'el-input',
               //   '~label': 'Width',
@@ -42,8 +42,8 @@ import { computed, unref } from 'vue'
                 '~default': 'light',
                 clearable: true
               }
-            ]
-          },
+            ])
+          ,
           //Title
           {
             '~component': 'el-collapse',

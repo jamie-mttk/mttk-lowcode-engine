@@ -203,7 +203,7 @@ export default {
         }
       },
       top: {
-        title: '欢迎使用MTTK低代码引擎',
+        title: 'MTTK低代码引擎',
         setting: '设置',
         menu: {
           account: '用户管理',
@@ -214,6 +214,7 @@ export default {
           _logout: '登出'
         },
         account:{
+          name:'用户',
           title:'用户管理',
           changePassword:'修改密码',  
           resetPassword:'重置密码',  
@@ -222,7 +223,9 @@ export default {
           password:'密码',
           active:'激活',
           groups:'用户组',
-          roles:'角色',       
+          roles:'角色',     
+          email:'电子邮件',
+          tel:'电话',    
           cpDialog:{
             title:'修改密码',
             passwordOld:'旧密码',
@@ -358,7 +361,7 @@ export default {
         }
       },
       basic:{
-        folerName:'基本',
+        folerName:'基础组件',
         html:{
           name: 'HTML',
           description: 'HTML',
@@ -380,6 +383,7 @@ export default {
         },
       },
       element:{
+        folerName: 'Element Plus 组件',
         button:{
           name: '按钮',
           label:'按钮文字',

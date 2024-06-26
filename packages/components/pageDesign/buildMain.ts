@@ -60,7 +60,8 @@ export function buildMain(context) {
           '~': 'el-main',
           style: computed(()=>{
             //The height is different depends on whether there is plugin installed
-            return { padding:'0px',height:'calc(100vh - '+(hasPlugin?'100px':'50px')+')'}
+            //height:'calc(100vh - '+(hasPlugin?'100px':'50px')+')'
+            return { padding:'0px',}
           }),
           '@mousedown': panelOuterClicked,
           '#': {

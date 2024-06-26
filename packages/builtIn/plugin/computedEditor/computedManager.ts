@@ -17,7 +17,7 @@ export default function computedManager(context: object) {
     // }
 
     // console.log('query criteria:'+JSON.stringify(context.d.g('QueryCriteria')))
-    if (cached !== undefined) {
+    if (cached != undefined) {
       //existed,return directly
       return cached
     }

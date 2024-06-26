@@ -34,9 +34,9 @@ const buttonConfig = {
         uiUtil.createSelect('type', ['primary', 'success', 'warning', 'danger', 'info'],t('_.builtIn.element.button.type')),
         uiUtil.createSelect('size', ['large', 'default', 'small'],t('_.builtIn.element.button.size')),
         uiUtil.createSwitch('disabled',t('_.builtIn.element.button.disabled')),
-        uiUtil.createColorPicker('color', undefined, {
+        uiUtil.createColorPicker('color',t('_.builtIn.element.button.color'), {
           predefine: ['#ff4500', '#ff8c00', '#ffd700', '#90ee90', '#00ced1', '#1e90ff', '#c71585']
-        },t('_.builtIn.element.button.color'))
+        })
       ]
     },
     data: false,

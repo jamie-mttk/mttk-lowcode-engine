@@ -33,7 +33,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
-import * as mdiIcons from '@mdi/js'
+import * as mdi from '@mdi/js'
 import PickerSingle from './pickerSingle.vue'
 import { toLine } from '../icon/iconUtil'
 //
@@ -62,7 +62,7 @@ const load = () => {
 onMounted(()=>{
 //Load all icons
 let result = [] as string[]
-for (const [key] of Object.entries(mdiIcons)) {
+for (const [key] of Object.entries(mdi)) {
   result.push(key)
 }
 iconsAll.value = result

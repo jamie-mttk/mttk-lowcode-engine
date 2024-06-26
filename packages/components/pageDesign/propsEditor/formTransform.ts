@@ -127,7 +127,7 @@ function calFormItemCollapse(data, itemConfig, context?: object) {
   const c = {
     '~component': 'el-collapse',
     accordion: true,
-    'model-value': uniqueKey,
+    'model-value': itemConfig['~default']?uniqueKey:undefined,
     '~styles': {
       padding: '4px',
       'margin-bottom': '8px',

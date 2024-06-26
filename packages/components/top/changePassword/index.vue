@@ -2,7 +2,7 @@
     <div>
      <h3>{{$t('_.components.top.account.cpDialog.title')}}</h3>
      
-     <el-form ref="dataEditorFormRef" :model="formData" label-width="200px">
+     <el-form ref="dataEditorFormRef" :model="formData" label-width="120px" style="width:90%;">
    
          <el-form-item
            :label="$t('_.components.top.account.cpDialog.passwordOld')"

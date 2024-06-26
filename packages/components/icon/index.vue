@@ -9,14 +9,14 @@
       >
     <i class="lc-icon" :style="styleObject" aria-hidden="true"  v-bind="$attrs" @click="handleClick">
         <svg class="lc-icon_svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true">
-            <path :d="all[toHump(props.icon)]"></path>
+            <path :d="mdi[toHump(props.icon)]"></path>
         </svg>
     </i>
     </el-tooltip>
 </template>
 <script setup lang="ts">
 import {reactive} from 'vue'
-import * as all from '@mdi/js'
+import * as mdi from '@mdi/js'
 import {toHump} from './iconUtil'
 
 const predefinedSize={'x-small':'1em',small:'1.25em',medium:'1.5em',large:'1.75em','x-large':'2em'}
@@ -33,7 +33,7 @@ const emit = defineEmits<{
 
 const styleObject = reactive({
   color: props.color||'',
-  fontSize: props.size?predefinedSize[props.size]||props.size:'medium'
+  fontSize:predefinedSize[props.size||'x-small']||props.size
 })
 
 //el-tooltip will override the click event,so we raise event here

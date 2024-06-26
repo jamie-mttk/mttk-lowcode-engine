@@ -35,7 +35,7 @@ export default defineConfig({
       external: [
         '@mdi/js',
         '@vueuse/core',
-        'animate.css',
+        // 'animate.css',
         'axios',
         //'bin-editor-next', can not be external
         'element-plus',

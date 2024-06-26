@@ -10,7 +10,7 @@ const model=defineModel({ type: Object})
 //     (e: 'update:modelValue', value: Object): void
 // }>()
 //
-const context = inject('context')
+// const context = inject('context')
 //Whether component is choosed
 // const isChoosed = computed(() => {   
 //     const choosed = context.choosedManager.get()
@@ -104,7 +104,7 @@ function styleExist(name: string) {
                     <span v-else>{{ sp.row.value }}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="operation" label="Operation" width="24px">
+            <el-table-column prop="operation" label="Operation" width="32px" align="center">
                 <template #default="sp">
                  
                             <lc-icon icon="mdiTrashCanOutline" @click="deleteRow(sp)"></lc-icon>
